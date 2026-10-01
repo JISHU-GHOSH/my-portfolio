@@ -25,10 +25,10 @@ const MAX_FRAME_STEP  = 1.0;
 // Known source video aspect ratio (1920x1080 = 16:9)
 const ASPECT_RATIO    = 1920 / 1080;
 
-export default function CharacterCanvas({ isNodding = false, onIdleStare }) {
+export default function CharacterCanvas({ isNodding = false }) {
   const canvasRef = useRef(null);
-  const propsRef = useRef({ isNodding, onIdleStare });
-  propsRef.current = { isNodding, onIdleStare };
+  const propsRef = useRef({ isNodding });
+  propsRef.current = { isNodding };
 
   const state = useRef({
     frames:         [],
@@ -42,8 +42,6 @@ export default function CharacterCanvas({ isNodding = false, onIdleStare }) {
     mouseX:         0.5,
     mouseY:         0.5,
     isReady:        false,
-    idleStartTime:  null,
-    idleTriggered:  false,
     nodProgress:    0,
   });
 
@@ -158,19 +156,7 @@ export default function CharacterCanvas({ isNodding = false, onIdleStare }) {
       const dist = Math.sqrt(dx * dx + dy * dy) / Math.min(W, H);
       s.isCenter = dist < DEADZONE_RADIUS;
 
-      const { isNodding: nod, onIdleStare: idleCb } = propsRef.current;
-
-      // Idle Stare Detection (> 2.2s in eye contact zone)
-      if (s.isCenter) {
-        if (!s.idleStartTime) s.idleStartTime = ts;
-        else if (ts - s.idleStartTime > 2200 && !s.idleTriggered) {
-          s.idleTriggered = true;
-          if (idleCb) idleCb();
-        }
-      } else {
-        s.idleStartTime = null;
-        s.idleTriggered = false;
-      }
+      const { isNodding: nod } = propsRef.current;
 
       // Continuously calculate target angle (even in deadzone)
       s.targetAngle = Math.atan2(-dy, dx);

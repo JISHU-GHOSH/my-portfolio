@@ -81,10 +81,7 @@ export default function HeroSection() {
     };
   }, [triggerCharacterReaction, isContactOpen, isResumeOpen]);
 
-  // Idle Stare Callback
-  const handleIdleStare = useCallback(() => {
-    triggerCharacterReaction("Caught you staring! 👀");
-  }, [triggerCharacterReaction]);
+
 
   // ── Magnetic cursor with Spring Physics & Event Delegation ──
   useEffect(() => {
@@ -173,7 +170,6 @@ export default function HeroSection() {
       {/* Full-screen character animation (fixed, behind everything) */}
       <CharacterCanvas
         isNodding={isNodding}
-        onIdleStare={handleIdleStare}
       />
 
       {/* Vignette gradient overlay for text readability */}
