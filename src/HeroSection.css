@@ -1,0 +1,249 @@
+/* ─────────────────────────────────────────────
+   HeroSection — Full-screen layout
+   Canvas is the background. All UI floats above.
+───────────────────────────────────────────── */
+
+/* ── Root container ─────────────────────────── */
+.hero {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ── Full-screen character canvas ───────────────
+   position: fixed so it truly covers the viewport
+   independent of any scroll or layout shift.
+   z-index: 0 — everything else floats above.
+──────────────────────────────────────────────── */
+.character-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  z-index: 0;
+  will-change: contents;      /* keep canvas on GPU compositing layer */
+  transform: translateZ(0);   /* force own compositing layer */
+  image-rendering: auto;      /* let GPU choose best quality */
+}
+
+/* ── Frosted-glass vignette overlay ─────────────
+   Very subtle darkening at corners/edges so the
+   text remains readable without obscuring the face.
+──────────────────────────────────────────────── */
+.hero-vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 120% 100% at 50% 50%,
+      transparent 30%,
+      rgba(0,0,0,0.18) 70%,
+      rgba(0,0,0,0.45) 100%),
+    linear-gradient(to top,
+      rgba(0,0,0,0.55) 0%,
+      transparent 35%),
+    linear-gradient(to right,
+      rgba(0,0,0,0.30) 0%,
+      transparent 40%);
+}
+
+/* ── Frosted-glass nav pill ──────────────────────
+   Centered, floating, backdrop-blur.
+──────────────────────────────────────────────── */
+.nav-pill {
+  position: fixed;
+  top: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 8px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 999px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.25),
+              inset 0 1px 0 rgba(255,255,255,0.12);
+  isolation: isolate; /* prevents accidental layer merge with canvas */
+}
+
+.nav-pill a {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 20px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.75);
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
+}
+
+.nav-pill a:hover {
+  background: rgba(255,255,255,0.14);
+  color: #fff;
+}
+
+/* ── Bottom-left hero text block ─────────────────
+   Lives at the bottom-left of the viewport.
+   max-width ~360px so it never crowds the face.
+──────────────────────────────────────────────── */
+.hero-text {
+  position: fixed;
+  bottom: 9vh;
+  left: 6vw;
+  z-index: 10;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* "Hi, I'm" */
+.hero-greeting {
+  font-size: clamp(14px, 1.6vw, 18px);
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.65);
+  margin-bottom: 4px;
+  opacity: 0;
+  animation: fadeUp 0.7s ease 0.15s forwards;
+}
+
+/* "Jishu" — Dancing Script */
+.hero-name {
+  font-family: var(--font-script);
+  font-size: clamp(64px, 8vw, 110px);
+  font-weight: 700;
+  line-height: 0.95;
+  color: #fff;
+  /* Soft drop shadow so it reads on any background */
+  text-shadow:
+    0 2px 12px rgba(0,0,0,0.45),
+    0 0  40px rgba(255,255,255,0.08);
+  margin-bottom: 18px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.30s forwards;
+}
+
+/* 3-line bio */
+.hero-bio {
+  font-size: clamp(13px, 1.3vw, 15px);
+  font-weight: 400;
+  line-height: 1.65;
+  color: rgba(255,255,255,0.65);
+  max-width: 340px;
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.45s forwards;
+}
+
+/* Button row */
+.hero-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.60s forwards;
+}
+
+/* Resume — solid white pill */
+.btn-resume {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 26px;
+  border-radius: 999px;
+  border: none;
+  background: #fff;
+  color: #111;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, opacity 0.22s ease;
+  box-shadow: 0 4px 20px rgba(255,255,255,0.20);
+}
+
+.btn-resume:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(255,255,255,0.30);
+  background: rgba(255,255,255,0.92);
+}
+
+.btn-resume .arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  background: rgba(0,0,0,0.12);
+  border-radius: 50%;
+  font-size: 10px;
+  transition: transform 0.22s ease;
+}
+
+.btn-resume:hover .arrow {
+  transform: translate(2px, -2px);
+}
+
+/* Let's Talk — frosted glass pill */
+.btn-talk {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 26px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.35);
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: rgba(255,255,255,0.90);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, opacity 0.22s ease;
+  isolation: isolate; /* backdrop-filter — prevent layer merge with canvas */
+}
+
+.btn-talk:hover {
+  transform: translateY(-2px);
+  background: rgba(255,255,255,0.15);
+  border-color: rgba(255,255,255,0.55);
+}
+
+/* ── Entrance animations ──────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Responsive tweaks ───────────────────────── */
+@media (max-width: 600px) {
+  .hero-text {
+    bottom: 7vh;
+    left: 5vw;
+    max-width: calc(100vw - 40px);
+  }
+  .hero-name {
+    font-size: clamp(52px, 15vw, 80px);
+  }
+  .nav-pill a {
+    padding: 8px 14px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+  }
+}

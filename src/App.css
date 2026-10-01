@@ -1,0 +1,5 @@
+/* App-level styles — intentionally minimal. Global styles are in index.css */
+.app {
+  position: relative;
+  min-height: 100vh;
+}
