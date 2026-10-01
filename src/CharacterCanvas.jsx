@@ -27,6 +27,9 @@ const ASPECT_RATIO    = 1920 / 1080;
 
 export default function CharacterCanvas({ isHyperMode = false, isNodding = false, onIdleStare }) {
   const canvasRef = useRef(null);
+  const propsRef = useRef({ isHyperMode, isNodding, onIdleStare });
+  propsRef.current = { isHyperMode, isNodding, onIdleStare };
+
   const state = useRef({
     frames:         [],
     centerImg:      null,
@@ -155,12 +158,14 @@ export default function CharacterCanvas({ isHyperMode = false, isNodding = false
       const dist = Math.sqrt(dx * dx + dy * dy) / Math.min(W, H);
       s.isCenter = dist < DEADZONE_RADIUS;
 
+      const { isHyperMode: hyper, isNodding: nod, onIdleStare: idleCb } = propsRef.current;
+
       // Idle Stare Detection (> 2.2s in eye contact zone)
       if (s.isCenter) {
         if (!s.idleStartTime) s.idleStartTime = ts;
         else if (ts - s.idleStartTime > 2200 && !s.idleTriggered) {
           s.idleTriggered = true;
-          if (onIdleStare) onIdleStare();
+          if (idleCb) idleCb();
         }
       } else {
         s.idleStartTime = null;
@@ -181,8 +186,8 @@ export default function CharacterCanvas({ isHyperMode = false, isNodding = false
       if (diff < -NUM_FRAMES / 2) diff += NUM_FRAMES;
 
       // Hyper-Speed Mode: faster response factor
-      const activeLerp = isHyperMode ? 0.38 : FRAME_LERP;
-      const activeCap  = isHyperMode ? 2.0 : MAX_FRAME_STEP;
+      const activeLerp = hyper ? 0.38 : FRAME_LERP;
+      const activeCap  = hyper ? 2.0 : MAX_FRAME_STEP;
 
       const lf = 1 - Math.pow(1 - activeLerp, dt);
 
@@ -233,7 +238,7 @@ export default function CharacterCanvas({ isHyperMode = false, isNodding = false
           }
 
           // Tactile Nod animation offset
-          if (isNodding) {
+          if (nod) {
             dY += 8;
           }
 
@@ -259,7 +264,7 @@ export default function CharacterCanvas({ isHyperMode = false, isNodding = false
       if (s.rafId) cancelAnimationFrame(s.rafId);
       window.removeEventListener('resize', resize);
     };
-  }, [isHyperMode, isNodding, onIdleStare]);
+  }, []);
 
   return (
     <canvas
