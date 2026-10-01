@@ -9,6 +9,7 @@
   max-width: 100vw;
   padding: 64px 4vw;
   box-sizing: border-box;
+  scroll-margin-top: 80px;
 }
 
 .section-container {
