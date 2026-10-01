@@ -25,10 +25,10 @@ const MAX_FRAME_STEP  = 1.0;
 // Known source video aspect ratio (1920x1080 = 16:9)
 const ASPECT_RATIO    = 1920 / 1080;
 
-export default function CharacterCanvas({ isHyperMode = false, isNodding = false, onIdleStare }) {
+export default function CharacterCanvas({ isNodding = false, onIdleStare }) {
   const canvasRef = useRef(null);
-  const propsRef = useRef({ isHyperMode, isNodding, onIdleStare });
-  propsRef.current = { isHyperMode, isNodding, onIdleStare };
+  const propsRef = useRef({ isNodding, onIdleStare });
+  propsRef.current = { isNodding, onIdleStare };
 
   const state = useRef({
     frames:         [],
@@ -158,7 +158,7 @@ export default function CharacterCanvas({ isHyperMode = false, isNodding = false
       const dist = Math.sqrt(dx * dx + dy * dy) / Math.min(W, H);
       s.isCenter = dist < DEADZONE_RADIUS;
 
-      const { isHyperMode: hyper, isNodding: nod, onIdleStare: idleCb } = propsRef.current;
+      const { isNodding: nod, onIdleStare: idleCb } = propsRef.current;
 
       // Idle Stare Detection (> 2.2s in eye contact zone)
       if (s.isCenter) {
@@ -185,17 +185,13 @@ export default function CharacterCanvas({ isHyperMode = false, isNodding = false
       if (diff >  NUM_FRAMES / 2) diff -= NUM_FRAMES;
       if (diff < -NUM_FRAMES / 2) diff += NUM_FRAMES;
 
-      // Hyper-Speed Mode: faster response factor
-      const activeLerp = hyper ? 0.38 : FRAME_LERP;
-      const activeCap  = hyper ? 2.0 : MAX_FRAME_STEP;
-
-      const lf = 1 - Math.pow(1 - activeLerp, dt);
+      const lf = 1 - Math.pow(1 - FRAME_LERP, dt);
 
       // Two-phase tracking
       const absDiff = Math.abs(diff);
       const step = absDiff > 3
-        ? Math.sign(diff) * activeCap
-        : Math.sign(diff) * Math.min(absDiff * lf, activeCap);
+        ? Math.sign(diff) * MAX_FRAME_STEP
+        : Math.sign(diff) * Math.min(absDiff * lf, MAX_FRAME_STEP);
 
       s.smoothFrame = ((s.smoothFrame + step) % NUM_FRAMES + NUM_FRAMES) % NUM_FRAMES;
 

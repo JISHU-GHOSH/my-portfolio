@@ -31,34 +31,8 @@ export function playChimeSound() {
 }
 
 
-/**
- * Play a cosmic rising sweep for Hyper-Speed Focus easter egg.
- */
 export function playHyperSound() {
-  if (isMuted) return;
-  try {
-    const ctx = getAudioContext();
-    if (!ctx) return;
-
-    const now = ctx.currentTime;
-    const osc = ctx.createOscillator();
-    const gainNode = ctx.createGain();
-
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(320, now);
-    osc.frequency.exponentialRampToValueAtTime(1280, now + 0.45);
-
-    gainNode.gain.setValueAtTime(0.12, now);
-    gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 0.50);
-
-    osc.connect(gainNode);
-    gainNode.connect(ctx.destination);
-
-    osc.start(now);
-    osc.stop(now + 0.52);
-  } catch {
-    // Graceful fallback
-  }
+  return;
 }
 
 export function toggleAudio() {

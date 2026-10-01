@@ -26,8 +26,7 @@ const MESSAGES = [
   "Hey! I'm Jishu. Welcome to my creative space 👋",
   "Fun fact: My head is tracking you at 60 FPS using pure vector math 📐",
   "Check out Xubhodaya and the Quant engine below 🚀",
-  "Looking for high-velocity engineering with taste? Let's talk!",
-  "Double-click me to unleash Hyper-Speed Focus mode ⚡"
+  "Looking for high-velocity engineering with taste? Let's talk!"
 ];
 
 export default function HeroSection() {
@@ -41,7 +40,6 @@ export default function HeroSection() {
   // Easter Egg & Character Interactive States
   const [speechMessage, setSpeechMessage] = useState('');
   const [isSpeechVisible, setIsSpeechVisible] = useState(false);
-  const [isHyperMode, setIsHyperMode] = useState(false);
   const [isNodding, setIsNodding] = useState(false);
   const messageIndexRef = useRef(0);
 
@@ -83,50 +81,10 @@ export default function HeroSection() {
     };
   }, [triggerCharacterReaction, isContactOpen, isResumeOpen]);
 
-  // Double click Easter egg: Hyper-speed mode
-  const triggerHyperMode = useCallback(() => {
-    setIsHyperMode(true);
-    setIsNodding(true);
-    setTimeout(() => setIsNodding(false), 300);
-
-    setSpeechMessage("⚡ Hyper-Speed Focus Mode Engaged!");
-    setIsSpeechVisible(true);
-
-    if (bubbleTimeoutRef.current) clearTimeout(bubbleTimeoutRef.current);
-    bubbleTimeoutRef.current = setTimeout(() => {
-      setIsSpeechVisible(false);
-    }, 4500);
-
-    setTimeout(() => {
-      setIsHyperMode(false);
-    }, 5000);
-  }, []);
-
   // Idle Stare Callback
   const handleIdleStare = useCallback(() => {
     triggerCharacterReaction("Caught you staring! 👀");
   }, [triggerCharacterReaction]);
-
-  // Hero click & tap handler
-  const handleHeroClick = (e) => {
-    if (e.target.closest('button, a, input, textarea, nav, .hero-buttons')) return;
-
-    const W = window.innerWidth;
-    const H = window.innerHeight;
-    const dx = e.clientX - W * 0.50;
-    const dy = e.clientY - H * 0.40;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-
-    // If within character proximity (radius ~40% of viewport)
-    if (dist < Math.min(W, H) * 0.42) {
-      triggerCharacterReaction();
-    }
-  };
-
-  const handleHeroDoubleClick = (e) => {
-    if (e.target.closest('button, a, input, textarea, nav, .hero-buttons')) return;
-    triggerHyperMode();
-  };
 
   // ── Magnetic cursor with Spring Physics & Event Delegation ──
   useEffect(() => {
@@ -210,15 +168,10 @@ export default function HeroSection() {
     <div className="portfolio-page">
       {/* ── Magnetic cursor ──────────────────────────────── */}
       <div ref={dotRef}  className="cursor-dot"  aria-hidden="true" />
-      <div
-        ref={ringRef}
-        className={`cursor-ring ${isHyperMode ? 'is-hyper-active' : ''}`}
-        aria-hidden="true"
-      />
+      <div ref={ringRef} className="cursor-ring" aria-hidden="true" />
 
       {/* Full-screen character animation (fixed, behind everything) */}
       <CharacterCanvas
-        isHyperMode={isHyperMode}
         isNodding={isNodding}
         onIdleStare={handleIdleStare}
       />
@@ -235,18 +188,11 @@ export default function HeroSection() {
       </nav>
 
       {/* ── Hero Section (100vh) ────────────────────────── */}
-      <header
-        id="hero"
-        className="hero"
-        onClick={handleHeroClick}
-        onDoubleClick={handleHeroDoubleClick}
-        title="Click me to chat • Double-click for Hyper-Speed!"
-      >
+      <header id="hero" className="hero">
         {/* Interactive Speech Bubble */}
         <SpeechBubble
           message={speechMessage}
           isVisible={isSpeechVisible}
-          isHyperMode={isHyperMode}
         />
 
         <div className="hero-text">
