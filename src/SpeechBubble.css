@@ -1,0 +1,113 @@
+/* ─────────────────────────────────────────────
+   SpeechBubble — Frosted Glass Easter Egg Bubble
+───────────────────────────────────────────── */
+
+.speech-bubble-container {
+  position: absolute;
+  top: 32vh;
+  left: 54vw;
+  z-index: 25;
+  pointer-events: none;
+  max-width: 320px;
+  width: calc(100vw - 32px);
+  opacity: 0;
+  transform: translateY(12px) scale(0.92);
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.speech-bubble-container.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.speech-bubble-container.is-fading {
+  opacity: 0;
+  transform: translateY(-8px) scale(0.96);
+}
+
+.speech-bubble-card {
+  position: relative;
+  background: rgba(32, 8, 12, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border-radius: 18px;
+  padding: 16px 20px 14px 20px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55),
+              0 0 24px rgba(158, 21, 13, 0.30),
+              inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Hyper Mode Variant */
+.speech-bubble-container.is-hyper .speech-bubble-card {
+  border-color: rgba(251, 191, 36, 0.45);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6),
+              0 0 32px rgba(251, 191, 36, 0.35),
+              inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.speech-bubble-badge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.speech-bubble-container.is-hyper .speech-bubble-badge {
+  color: #fbbf24;
+}
+
+.speech-bubble-text {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.45;
+  color: #fff;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+/* Bubble Tail pointing to character head */
+.speech-bubble-tail {
+  position: absolute;
+  bottom: -8px;
+  left: 32px;
+  width: 14px;
+  height: 14px;
+  background: rgba(32, 8, 12, 0.75);
+  border-right: 1px solid rgba(255, 255, 255, 0.18);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  transform: rotate(45deg);
+  backdrop-filter: blur(28px);
+}
+
+.speech-bubble-container.is-hyper .speech-bubble-tail {
+  border-color: rgba(251, 191, 36, 0.45);
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .speech-bubble-container {
+    top: 20vh;
+    left: 50%;
+    transform: translateX(-50%) translateY(12px) scale(0.92);
+    max-width: 290px;
+  }
+
+  .speech-bubble-container.is-visible {
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+
+  .speech-bubble-container.is-fading {
+    transform: translateX(-50%) translateY(-8px) scale(0.96);
+  }
+
+  .speech-bubble-tail {
+    left: 50%;
+    margin-left: -7px;
+  }
+}

@@ -7,8 +7,7 @@
  *   - Full try/catch and ready-guards on canvas draw calls to guarantee zero crashes
  *   - Continuous targetAngle tracking (no jerky snaps when exiting center deadzone)
  *   - Two-phase frame step: rapid tracking with smooth 3-frame deceleration
- *   - MAX_FRAME_STEP <= 1.0 prevents any frame skipping
- *   - ZERO CSS 3D transforms (canvas stays 100% rock-solid motionless)
+ *   - Supports Hyper-Speed focus mode & interactive nodding animation
  */
 
 import { useRef, useEffect } from 'react';
@@ -26,20 +25,23 @@ const MAX_FRAME_STEP  = 1.0;
 // Known source video aspect ratio (1920x1080 = 16:9)
 const ASPECT_RATIO    = 1920 / 1080;
 
-export default function CharacterCanvas() {
+export default function CharacterCanvas({ isHyperMode = false, isNodding = false, onIdleStare }) {
   const canvasRef = useRef(null);
   const state = useRef({
-    frames:      [],
-    centerImg:   null,
-    loaded:      0,
-    totalFrames: NUM_FRAMES + 1,
-    smoothFrame: 0,     // float frame index [0, 64) — lerped each tick
-    targetAngle: 0,     // raw angle from cursor (radians)
-    isCenter:    true,
-    rafId:       null,
-    mouseX:      0.5,
-    mouseY:      0.5,
-    isReady:     false,
+    frames:         [],
+    centerImg:      null,
+    loaded:         0,
+    totalFrames:    NUM_FRAMES + 1,
+    smoothFrame:    0,     // float frame index [0, 64) — lerped each tick
+    targetAngle:    0,     // raw angle from cursor (radians)
+    isCenter:       true,
+    rafId:          null,
+    mouseX:         0.5,
+    mouseY:         0.5,
+    isReady:        false,
+    idleStartTime:  null,
+    idleTriggered:  false,
+    nodProgress:    0,
   });
 
   // ── Preload all 65 WebP images cleanly & safely ─────────
@@ -47,7 +49,6 @@ export default function CharacterCanvas() {
     const s = state.current;
     let isMounted = true;
 
-    // Allocate array
     const framesArray = [];
 
     const onImageLoaded = () => {
@@ -62,7 +63,7 @@ export default function CharacterCanvas() {
     for (let i = 0; i < NUM_FRAMES; i++) {
       const img = new Image();
       img.onload = onImageLoaded;
-      img.onerror = onImageLoaded; // count errors to avoid hanging
+      img.onerror = onImageLoaded;
       img.src = `/frames/${String(i).padStart(3, '0')}.webp`;
       framesArray.push(img);
     }
@@ -117,7 +118,7 @@ export default function CharacterCanvas() {
       const H = window.innerHeight;
       if (W <= 0 || H <= 0) return;
 
-      const dpr = Math.min(window.devicePixelRatio || 1, 2); // Cap at 2x for memory efficiency
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width  = Math.round(W * dpr);
       canvas.height = Math.round(H * dpr);
       ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -141,7 +142,6 @@ export default function CharacterCanvas() {
       if (W <= 0 || H <= 0) return;
 
       // ── Face center in viewport coordinates ──
-      // In 1920x1080 source frames, character eyes sit at ~(960, 430) = (50%, 40%)
       const faceCX = W * 0.50;
       const faceCY = H * 0.40;
 
@@ -155,8 +155,19 @@ export default function CharacterCanvas() {
       const dist = Math.sqrt(dx * dx + dy * dy) / Math.min(W, H);
       s.isCenter = dist < DEADZONE_RADIUS;
 
-      // Continuously calculate target angle (even in deadzone to avoid jump on exit)
-      // atan2(-dy, dx): RIGHT=0°, UP=+90°, LEFT=±180°, DOWN=-90°
+      // Idle Stare Detection (> 2.2s in eye contact zone)
+      if (s.isCenter) {
+        if (!s.idleStartTime) s.idleStartTime = ts;
+        else if (ts - s.idleStartTime > 2200 && !s.idleTriggered) {
+          s.idleTriggered = true;
+          if (onIdleStare) onIdleStare();
+        }
+      } else {
+        s.idleStartTime = null;
+        s.idleTriggered = false;
+      }
+
+      // Continuously calculate target angle (even in deadzone)
       s.targetAngle = Math.atan2(-dy, dx);
 
       // Convert target angle to floating frame index [0, 64)
@@ -164,26 +175,29 @@ export default function CharacterCanvas() {
       if (normTarget < 0) normTarget += 2 * Math.PI;
       const targetFrame = (normTarget / (2 * Math.PI)) * NUM_FRAMES;
 
-      // Shortest circular path on 64 frames circle
+      // Shortest circular path
       let diff = targetFrame - s.smoothFrame;
       if (diff >  NUM_FRAMES / 2) diff -= NUM_FRAMES;
       if (diff < -NUM_FRAMES / 2) diff += NUM_FRAMES;
 
-      // Frame-rate normalized lerp
-      const lf = 1 - Math.pow(1 - FRAME_LERP, dt);
+      // Hyper-Speed Mode: faster response factor
+      const activeLerp = isHyperMode ? 0.38 : FRAME_LERP;
+      const activeCap  = isHyperMode ? 2.0 : MAX_FRAME_STEP;
 
-      // Two-phase tracking: full speed when far, gentle lerp when within 3 frames
+      const lf = 1 - Math.pow(1 - activeLerp, dt);
+
+      // Two-phase tracking
       const absDiff = Math.abs(diff);
       const step = absDiff > 3
-        ? Math.sign(diff) * MAX_FRAME_STEP
-        : Math.sign(diff) * Math.min(absDiff * lf, MAX_FRAME_STEP);
+        ? Math.sign(diff) * activeCap
+        : Math.sign(diff) * Math.min(absDiff * lf, activeCap);
 
       s.smoothFrame = ((s.smoothFrame + step) % NUM_FRAMES + NUM_FRAMES) % NUM_FRAMES;
 
       // Nearest integer frame index
       const frameIdx = Math.round(s.smoothFrame) % NUM_FRAMES;
 
-      // Pick image: center pose if in deadzone, else directional frame
+      // Pick image
       let img = null;
       if (s.isCenter && s.centerImg && s.centerImg.complete && s.centerImg.naturalWidth > 0) {
         img = s.centerImg;
@@ -193,7 +207,7 @@ export default function CharacterCanvas() {
         img = s.centerImg;
       }
 
-      // Draw background color
+      // Draw background
       ctx.fillStyle = BG_COLOR;
       ctx.fillRect(0, 0, W, H);
 
@@ -218,13 +232,18 @@ export default function CharacterCanvas() {
             dY = (H - dH) / 2;
           }
 
+          // Tactile Nod animation offset
+          if (isNodding) {
+            dY += 8;
+          }
+
           ctx.drawImage(img, dX, dY, dW, dH);
         } catch {
-          // Prevent any drawing errors from breaking the render loop
+          // Graceful fallback
         }
       }
 
-      // Progress bar if still loading initial frames
+      // Loading progress bar
       if (!s.isReady && s.totalFrames > 0) {
         const p = Math.min(s.loaded / s.totalFrames, 1);
         ctx.fillStyle = 'rgba(0,0,0,0.5)';
@@ -240,7 +259,7 @@ export default function CharacterCanvas() {
       if (s.rafId) cancelAnimationFrame(s.rafId);
       window.removeEventListener('resize', resize);
     };
-  }, []);
+  }, [isHyperMode, isNodding, onIdleStare]);
 
   return (
     <canvas

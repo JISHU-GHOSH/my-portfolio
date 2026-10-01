@@ -3,28 +3,121 @@
  *
  * Structure:
  *   • CharacterCanvas  — full-screen fixed background (z-index: 0)
+ *   • SpeechBubble     — floating interactive dialogue bubble (z-index: 25)
  *   • .hero-vignette   — dark gradient vignette (z-index: 1)
  *   • .nav-pill        — frosted-glass top-center navigation (z-index: 1000)
+ *   • sound-toggle-btn — luxury audio toggle button (z-index: 1000)
  *   • .hero-text       — bottom-left name + bio + CTA (z-index: 10)
  *   • .content-wrapper — Work, About, and Contact sections (z-index: 10)
  *   • cursor-dot/ring  — magnetic white cursor with spring physics (z-index: 99998/99999)
  */
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useCallback } from 'react';
 import CharacterCanvas from './CharacterCanvas';
+import SpeechBubble from './SpeechBubble';
 import ProjectsSection from './ProjectsSection';
 import AboutSection from './AboutSection';
 import ContactSection from './ContactSection';
 import ContactModal from './ContactModal';
 import ResumeModal from './ResumeModal';
+import { playChimeSound, playHyperSound, toggleAudio } from './soundEffects';
 import './HeroSection.css';
+
+const MESSAGES = [
+  "Hey! I'm Jishu. Welcome to my creative space 👋",
+  "Fun fact: My head is tracking you at 60 FPS using pure vector math 📐",
+  "Check out Xubhodaya and the Quant engine below 🚀",
+  "Looking for high-velocity engineering with taste? Let's talk!",
+  "Double-click me to unleash Hyper-Speed Focus mode ⚡"
+];
 
 export default function HeroSection() {
   const dotRef  = useRef(null);
   const ringRef = useRef(null);
+  const bubbleTimeoutRef = useRef(null);
 
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [isResumeOpen, setIsResumeOpen] = useState(false);
+
+  // Easter Egg & Character Interactive States
+  const [speechMessage, setSpeechMessage] = useState('');
+  const [isSpeechVisible, setIsSpeechVisible] = useState(false);
+  const [isHyperMode, setIsHyperMode] = useState(false);
+  const [isNodding, setIsNodding] = useState(false);
+  const [isAudioMuted, setIsAudioMuted] = useState(false);
+  const [messageIndex, setMessageIndex] = useState(0);
+
+  // Character reaction trigger
+  const triggerCharacterReaction = useCallback((customMsg) => {
+    playChimeSound();
+    setIsNodding(true);
+    setTimeout(() => setIsNodding(false), 250);
+
+    const nextMsg = customMsg || MESSAGES[messageIndex % MESSAGES.length];
+    setMessageIndex(prev => prev + 1);
+    setSpeechMessage(nextMsg);
+    setIsSpeechVisible(true);
+
+    if (bubbleTimeoutRef.current) clearTimeout(bubbleTimeoutRef.current);
+    bubbleTimeoutRef.current = setTimeout(() => {
+      setIsSpeechVisible(false);
+    }, 4200);
+  }, [messageIndex]);
+
+  // Double click Easter egg: Hyper-speed mode
+  const triggerHyperMode = useCallback(() => {
+    playHyperSound();
+    setIsHyperMode(true);
+    setIsNodding(true);
+    setTimeout(() => setIsNodding(false), 300);
+
+    setSpeechMessage("⚡ Hyper-Speed Focus Mode Engaged!");
+    setIsSpeechVisible(true);
+
+    if (bubbleTimeoutRef.current) clearTimeout(bubbleTimeoutRef.current);
+    bubbleTimeoutRef.current = setTimeout(() => {
+      setIsSpeechVisible(false);
+    }, 4500);
+
+    setTimeout(() => {
+      setIsHyperMode(false);
+    }, 5000);
+  }, []);
+
+  // Idle Stare Callback
+  const handleIdleStare = useCallback(() => {
+    triggerCharacterReaction("Caught you staring! 👀");
+  }, [triggerCharacterReaction]);
+
+  // Sound toggle
+  const handleToggleSound = () => {
+    const muted = toggleAudio();
+    setIsAudioMuted(muted);
+    if (!muted) {
+      playChimeSound();
+    }
+  };
+
+  // Hero click & tap handler
+  const handleHeroClick = (e) => {
+    if (e.target.closest('button, a, input, textarea, nav, .hero-buttons')) return;
+
+    const W = window.innerWidth;
+    const H = window.innerHeight;
+    const dx = e.clientX - W * 0.50;
+    const dy = e.clientY - H * 0.40;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    // If within character proximity (radius ~40% of viewport)
+    if (dist < Math.min(W, H) * 0.42) {
+      triggerCharacterReaction();
+    }
+  };
+
+  const handleHeroDoubleClick = (e) => {
+    if (e.target.closest('button, a, input, textarea, nav, .hero-buttons')) return;
+    triggerHyperMode();
+  };
 
   // ── Magnetic cursor with Spring Physics & Event Delegation ──
   useEffect(() => {
@@ -108,10 +201,18 @@ export default function HeroSection() {
     <div className="portfolio-page">
       {/* ── Magnetic cursor ──────────────────────────────── */}
       <div ref={dotRef}  className="cursor-dot"  aria-hidden="true" />
-      <div ref={ringRef} className="cursor-ring" aria-hidden="true" />
+      <div
+        ref={ringRef}
+        className={`cursor-ring ${isHyperMode ? 'is-hyper-active' : ''}`}
+        aria-hidden="true"
+      />
 
       {/* Full-screen character animation (fixed, behind everything) */}
-      <CharacterCanvas />
+      <CharacterCanvas
+        isHyperMode={isHyperMode}
+        isNodding={isNodding}
+        onIdleStare={handleIdleStare}
+      />
 
       {/* Vignette gradient overlay for text readability */}
       <div className="hero-vignette" aria-hidden="true" />
@@ -124,8 +225,31 @@ export default function HeroSection() {
         <a href="#contact">Contact</a>
       </nav>
 
+      {/* ── Sound Toggle Pill (Top-Right) ────────────────── */}
+      <button
+        type="button"
+        className="sound-toggle-btn"
+        onClick={handleToggleSound}
+        aria-label={isAudioMuted ? "Unmute interface audio" : "Mute interface audio"}
+      >
+        {isAudioMuted ? '🔇 Audio: OFF' : '🔊 Audio: ON'}
+      </button>
+
       {/* ── Hero Section (100vh) ────────────────────────── */}
-      <header id="hero" className="hero">
+      <header
+        id="hero"
+        className="hero"
+        onClick={handleHeroClick}
+        onDoubleClick={handleHeroDoubleClick}
+        title="Click me to chat • Double-click for Hyper-Speed!"
+      >
+        {/* Interactive Speech Bubble */}
+        <SpeechBubble
+          message={speechMessage}
+          isVisible={isSpeechVisible}
+          isHyperMode={isHyperMode}
+        />
+
         <div className="hero-text">
           <p className="hero-greeting">Hi, I'm</p>
           <h1 className="hero-name">Jishu</h1>
@@ -167,7 +291,7 @@ export default function HeroSection() {
         <ContactSection onOpenModal={() => setIsContactOpen(true)} />
       </main>
 
-      {/* ── Interactive Modals ──────────────────────────── */}
+      {/* ── Interactive Modals ──────────────────── */}
       <ContactModal
         isOpen={isContactOpen}
         onClose={() => setIsContactOpen(false)}
