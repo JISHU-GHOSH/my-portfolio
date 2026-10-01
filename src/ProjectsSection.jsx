@@ -3,60 +3,60 @@ import './ProjectsSection.css';
 
 const PROJECTS = [
   {
-    id: 'echopulse',
-    title: 'EchoPulse',
-    tagline: 'Real-Time Collaborative Canvas Platform',
+    id: 'xubhodaya',
+    title: 'Memory Companion (Xubhodaya)',
+    tagline: 'AI Dementia Cognitive Care & Memory Assistance Platform',
     description:
-      'High-throughput collaborative drawing and diagramming canvas with zero-lag multi-user vector synchronization over WebSockets and optimized 60 FPS HTML5 Canvas engine.',
-    category: 'Full Stack',
-    tags: ['React 19', 'WebSockets', 'HTML5 Canvas', 'Node.js', 'Redis'],
-    github: 'https://github.com/JISHU-GHOSH/my-portfolio',
-    demo: '#',
+      'Digital therapeutic platform built for Smart India Hackathon (SIH 2026). Features 3-step progressive non-punitive hints, voice recognition, touch dwell micro-telemetry for motor stiffness detection, and 30-day longitudinal cognitive scoring.',
+    category: 'AI & Healthcare',
+    tags: ['Python', 'FastAPI', 'SQLite', 'React', 'Vite', 'Tailwind CSS', 'Web Speech API'],
+    github: 'https://github.com/JISHU-GHOSH/xubhodaya',
+    demo: 'https://github.com/JISHU-GHOSH/xubhodaya',
     featured: true,
-    stats: '60 FPS • <20ms Sync'
+    stats: 'SIH 2026 • Cognitive AI'
   },
   {
-    id: 'nexusai',
-    title: 'NexusAI',
-    tagline: 'Autonomous Multi-Agent Knowledge Orchestrator',
+    id: 'quant-engine',
+    title: 'News-Driven Quantitative Engine',
+    tagline: 'Multi-Algorithmic Market Prediction & Execution System',
     description:
-      'Distributed agent workflow framework executing complex multi-step reasoning, dynamic tool usage, and vector-search RAG retrieval across heterogeneous data sources.',
-    category: 'AI & Systems',
-    tags: ['Python', 'FastAPI', 'LangChain', 'Vector DB', 'React'],
-    github: 'https://github.com/JISHU-GHOSH/my-portfolio',
-    demo: '#',
+      'Institutional-grade quantitative alpha generation engine integrating causal temporal decay kernels, Bayesian game-theoretic scenario stress-testing, SOR smart order routing, and a real-time WebGL/Canvas research terminal.',
+    category: 'Quantitative Systems',
+    tags: ['Python', 'DuckDB', 'FastAPI', 'WebSockets', 'React 19', 'Algorithms', 'Mathematical Modeling'],
+    github: 'https://github.com/joshihridesh001-png/Quant-stuff',
+    demo: 'https://github.com/joshihridesh001-png/Quant-stuff',
     featured: true,
-    stats: 'Multi-Agent • RAG'
+    stats: 'Sub-100ms • Algorithmic'
   },
   {
-    id: 'quantix',
-    title: 'Quantix',
-    tagline: 'High-Frequency Algorithmic Analytics Engine',
+    id: 'mios',
+    title: 'MIOS (Marketing Intelligence OS)',
+    tagline: 'Institutional Knowledge & Experimentation OS',
     description:
-      'Ultra-responsive trading dashboard rendering interactive candlestick metrics and historical backtests with sub-100ms data ingestion and PostgreSQL timeseries schemas.',
-    category: 'FinTech',
-    tags: ['Next.js', 'TypeScript', 'TradingView API', 'PostgreSQL', 'Go'],
-    github: 'https://github.com/JISHU-GHOSH/my-portfolio',
-    demo: '#',
-    featured: false,
-    stats: 'Sub-100ms • Timeseries'
-  },
-  {
-    id: 'aurapay',
-    title: 'AuraPay',
-    tagline: 'Multi-Tenant Subscription & Invoicing Engine',
-    description:
-      'Secure payment orchestration microservice with automated recurring billing, webhooks idempotency, Stripe integration, and real-time revenue analytics.',
+      'Centralized operating system capturing performance metrics, systematic A/B experiment learnings, and consumer psychology frameworks into a permanent, searchable institutional knowledge repository.',
     category: 'Full Stack',
-    tags: ['Node.js', 'Express', 'Stripe API', 'Prisma', 'Docker'],
-    github: 'https://github.com/JISHU-GHOSH/my-portfolio',
-    demo: '#',
+    tags: ['Next.js', 'React', 'TypeScript', 'Supabase', 'Tailwind CSS', 'PostgreSQL'],
+    github: 'https://github.com/joshihridesh001-png/MIOS',
+    demo: 'https://github.com/joshihridesh001-png/MIOS',
     featured: false,
-    stats: 'Idempotent • Microservice'
+    stats: 'Next.js App Router • Supabase'
+  },
+  {
+    id: 'portfolio-hero',
+    title: 'Interactive 3D Character Hero',
+    tagline: 'Zero-Ghosting 60 FPS Cursor Tracking Engine',
+    description:
+      'Ultra-luxury portfolio centerpiece featuring real-time angular head tracking, shortest-path circular lerp, OpenCV Telea inpainting, deadzone eye contact, and second-order spring dynamics.',
+    category: 'Creative Tech',
+    tags: ['React 19', 'HTML5 Canvas', 'Python / OpenCV', 'Spring Physics', 'Vite'],
+    github: 'https://github.com/JISHU-GHOSH/my-portfolio',
+    demo: 'http://localhost:5173',
+    featured: true,
+    stats: '60 FPS • <35ms Response'
   }
 ];
 
-const CATEGORIES = ['All', 'Full Stack', 'AI & Systems', 'FinTech'];
+const CATEGORIES = ['All', 'AI & Healthcare', 'Quantitative Systems', 'Full Stack', 'Creative Tech'];
 
 export default function ProjectsSection() {
   const [activeCategory, setActiveCategory] = useState('All');
@@ -70,9 +70,9 @@ export default function ProjectsSection() {
       <div className="section-container">
         <div className="section-header">
           <div className="section-badge">Selected Work</div>
-          <h2 className="section-title">Crafted with Precision</h2>
+          <h2 className="section-title">Projects & Systems</h2>
           <p className="section-subtitle">
-            A curated collection of full-stack architectures, real-time engines, and interactive applications.
+            Real-world systems spanning cognitive healthcare AI, quantitative algorithmic finance, and high-performance interactive architectures.
           </p>
 
           <div className="category-tabs" role="tablist">
@@ -119,14 +119,16 @@ export default function ProjectsSection() {
                   <svg className="btn-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
                     <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
                   </svg>
-                  Source
+                  Repository
                 </a>
                 <a
                   href={project.demo}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="card-btn card-btn-primary"
-                  aria-label={`View live demo of ${project.title}`}
+                  aria-label={`Explore ${project.title}`}
                 >
-                  Live Demo
+                  Explore
                   <span className="btn-arrow" aria-hidden="true">↗</span>
                 </a>
               </div>

@@ -88,55 +88,75 @@ export default function ResumeModal({ isOpen, onClose }) {
         </div>
 
         <div className="resume-body">
-          {/* Section: Summary */}
+          {/* Section: Profile */}
           <div className="resume-block">
-            <h4 className="block-title">Summary</h4>
+            <h4 className="block-title">Profile</h4>
             <p className="block-text">
-              Results-driven Full Stack Developer specializing in building high-performance web applications,
-              interactive visual interfaces, and resilient backend systems. Adept at translating complex designs into
-              pixel-perfect 60 FPS experiences with scalable architectures, modern APIs, and optimized databases.
+              High-velocity Full Stack Developer and creative technologist who builds by intuition and momentum.
+              Skilled in transforming complex ideas into fluid, production-grade applications with deep foundations in
+              Python, C++, C, JavaScript, and modern AI/agentic development workflows.
             </p>
           </div>
 
-          {/* Section: Core Skills */}
+          {/* Section: Technical Expertise */}
           <div className="resume-block">
-            <h4 className="block-title">Technical Expertise</h4>
+            <h4 className="block-title">Core Languages & Technical Stack</h4>
             <div className="resume-skills-grid">
               <div className="resume-skill-col">
-                <strong>Frontend:</strong>
-                <span>React 19, TypeScript, HTML5 Canvas, WebGL, Next.js, Tailwind CSS</span>
+                <strong>Programming Languages:</strong>
+                <span>Python, C++, C, JavaScript (ESNext), HTML5, CSS3, TypeScript, SQL</span>
               </div>
               <div className="resume-skill-col">
-                <strong>Backend & APIs:</strong>
-                <span>Node.js, Express, Python, FastAPI, WebSockets, RESTful, GraphQL</span>
+                <strong>Frontend & Creative:</strong>
+                <span>React 19, HTML5 Canvas (60 FPS), WebGL, Vite, Tailwind CSS, Spring Physics</span>
               </div>
               <div className="resume-skill-col">
-                <strong>Data & Cloud:</strong>
-                <span>PostgreSQL, Redis, MongoDB, Docker, Git, AWS, Vercel</span>
+                <strong>Backend & Data:</strong>
+                <span>FastAPI, Node.js, Express, DuckDB, SQLite, PostgreSQL, WebSockets, Redis, OpenCV</span>
               </div>
             </div>
           </div>
 
-          {/* Section: Featured Projects */}
+          {/* Section: Featured Systems */}
           <div className="resume-block">
             <h4 className="block-title">Featured Projects</h4>
             <div className="resume-item">
               <div className="resume-item-top">
-                <span className="item-name">EchoPulse — Real-Time Collaborative Canvas Platform</span>
-                <span className="item-meta">React 19 • Canvas • WebSockets • Redis</span>
+                <span className="item-name">Memory Companion (Xubhodaya)</span>
+                <span className="item-meta">Smart India Hackathon 2026 • Python • FastAPI • React</span>
               </div>
               <p className="item-desc">
-                Architected zero-lag multi-user collaborative canvas with real-time vector synchronization over WebSockets running at 60 FPS.
+                AI dementia cognitive therapeutic platform with non-punitive progressive hint scaffolding, voice synthesis, and micro-interaction touch dwell telemetry.
               </p>
             </div>
 
             <div className="resume-item">
               <div className="resume-item-top">
-                <span className="item-name">NexusAI — Autonomous Agent Orchestrator</span>
-                <span className="item-meta">Python • FastAPI • Vector DB • LangChain</span>
+                <span className="item-name">News-Driven Quantitative Prediction Engine</span>
+                <span className="item-meta">Collaboration with Hridesh Joshi • Python • DuckDB • React 19</span>
               </div>
               <p className="item-desc">
-                Developed an asynchronous multi-agent framework executing multi-step reasoning and semantic RAG retrieval across heterogeneous datasets.
+                Multi-algorithmic market prediction and alpha generation engine featuring causal temporal decay kernels, Bayesian game theory, and live trading terminal.
+              </p>
+            </div>
+
+            <div className="resume-item">
+              <div className="resume-item-top">
+                <span className="item-name">MIOS (Marketing Intelligence OS)</span>
+                <span className="item-meta">Next.js • Supabase • TypeScript • Tailwind</span>
+              </div>
+              <p className="item-desc">
+                Centralized platform capturing performance analytics, A/B testing learnings, and psychological models into searchable institutional knowledge.
+              </p>
+            </div>
+
+            <div className="resume-item">
+              <div className="resume-item-top">
+                <span className="item-name">Interactive 3D Cursor Character Portfolio</span>
+                <span className="item-meta">React 19 • HTML5 Canvas • OpenCV Telea Inpainting • Vite</span>
+              </div>
+              <p className="item-desc">
+                Ultra-smooth zero-ghosting 60 FPS head-tracking engine using shortest-path circular angular lerping, deadzone eye-contact, and spring cursor physics.
               </p>
             </div>
           </div>
@@ -150,7 +170,7 @@ export default function ResumeModal({ isOpen, onClose }) {
                 <span className="item-meta">2022 – 2026</span>
               </div>
               <p className="item-desc">
-                Core Focus: Data Structures & Algorithms, Operating Systems, Database Management Systems, Computer Networks.
+                Core coursework in Data Structures & Algorithms, Object-Oriented Programming (C++), Operating Systems, and Database Management Systems.
               </p>
             </div>
           </div>
