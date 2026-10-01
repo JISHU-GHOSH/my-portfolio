@@ -45,16 +45,16 @@ export default function HeroSection() {
   const [isHyperMode, setIsHyperMode] = useState(false);
   const [isNodding, setIsNodding] = useState(false);
   const [isAudioMuted, setIsAudioMuted] = useState(false);
-  const [messageIndex, setMessageIndex] = useState(0);
+  const messageIndexRef = useRef(0);
 
-  // Character reaction trigger
+  // Character reaction trigger (stable callback)
   const triggerCharacterReaction = useCallback((customMsg) => {
     playChimeSound();
     setIsNodding(true);
     setTimeout(() => setIsNodding(false), 250);
 
-    const nextMsg = customMsg || MESSAGES[messageIndex % MESSAGES.length];
-    setMessageIndex(prev => prev + 1);
+    const nextMsg = customMsg || MESSAGES[messageIndexRef.current % MESSAGES.length];
+    messageIndexRef.current += 1;
     setSpeechMessage(nextMsg);
     setIsSpeechVisible(true);
 
@@ -62,7 +62,29 @@ export default function HeroSection() {
     bubbleTimeoutRef.current = setTimeout(() => {
       setIsSpeechVisible(false);
     }, 4200);
-  }, [messageIndex]);
+  }, []);
+
+  // ── Automatic Ambient Message Rotation ────────────────────
+  useEffect(() => {
+    // Initial greeting after 2.2 seconds of arrival
+    const initialTimer = setTimeout(() => {
+      if (window.scrollY < 300) {
+        triggerCharacterReaction(MESSAGES[0]);
+      }
+    }, 2200);
+
+    // Ambient rotation every 10 seconds while hero section is in view
+    const intervalTimer = setInterval(() => {
+      if (window.scrollY < window.innerHeight * 0.4 && !isContactOpen && !isResumeOpen) {
+        triggerCharacterReaction();
+      }
+    }, 10000);
+
+    return () => {
+      clearTimeout(initialTimer);
+      clearInterval(intervalTimer);
+    };
+  }, [triggerCharacterReaction, isContactOpen, isResumeOpen]);
 
   // Double click Easter egg: Hyper-speed mode
   const triggerHyperMode = useCallback(() => {
