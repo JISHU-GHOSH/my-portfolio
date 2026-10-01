@@ -20,7 +20,6 @@ import AboutSection from './AboutSection';
 import ContactSection from './ContactSection';
 import ContactModal from './ContactModal';
 import ResumeModal from './ResumeModal';
-import { playChimeSound, playHyperSound, toggleAudio } from './soundEffects';
 import './HeroSection.css';
 
 const MESSAGES = [
@@ -44,12 +43,10 @@ export default function HeroSection() {
   const [isSpeechVisible, setIsSpeechVisible] = useState(false);
   const [isHyperMode, setIsHyperMode] = useState(false);
   const [isNodding, setIsNodding] = useState(false);
-  const [isAudioMuted, setIsAudioMuted] = useState(false);
   const messageIndexRef = useRef(0);
 
-  // Character reaction trigger (stable callback)
+  // Character reaction trigger (silent visual popup + subtle nod)
   const triggerCharacterReaction = useCallback((customMsg) => {
-    playChimeSound();
     setIsNodding(true);
     setTimeout(() => setIsNodding(false), 250);
 
@@ -88,7 +85,6 @@ export default function HeroSection() {
 
   // Double click Easter egg: Hyper-speed mode
   const triggerHyperMode = useCallback(() => {
-    playHyperSound();
     setIsHyperMode(true);
     setIsNodding(true);
     setTimeout(() => setIsNodding(false), 300);
@@ -110,15 +106,6 @@ export default function HeroSection() {
   const handleIdleStare = useCallback(() => {
     triggerCharacterReaction("Caught you staring! 👀");
   }, [triggerCharacterReaction]);
-
-  // Sound toggle
-  const handleToggleSound = () => {
-    const muted = toggleAudio();
-    setIsAudioMuted(muted);
-    if (!muted) {
-      playChimeSound();
-    }
-  };
 
   // Hero click & tap handler
   const handleHeroClick = (e) => {
@@ -246,16 +233,6 @@ export default function HeroSection() {
         <a href="#about">About</a>
         <a href="#contact">Contact</a>
       </nav>
-
-      {/* ── Sound Toggle Pill (Top-Right) ────────────────── */}
-      <button
-        type="button"
-        className="sound-toggle-btn"
-        onClick={handleToggleSound}
-        aria-label={isAudioMuted ? "Unmute interface audio" : "Mute interface audio"}
-      >
-        {isAudioMuted ? '🔇 Audio: OFF' : '🔊 Audio: ON'}
-      </button>
 
       {/* ── Hero Section (100vh) ────────────────────────── */}
       <header
