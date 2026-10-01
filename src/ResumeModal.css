@@ -1,0 +1,121 @@
+/* ─────────────────────────────────────────────
+   ResumeModal — Frosted Glass Preview
+───────────────────────────────────────────── */
+
+dialog.resume-dialog {
+  max-width: 720px;
+}
+
+.resume-dialog-content {
+  max-height: 85vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 36px 36px 28px 36px;
+}
+
+.resume-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.resume-name {
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  margin-top: 6px;
+  margin-bottom: 2px;
+}
+
+.resume-role {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.resume-body {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.resume-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+}
+
+.block-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.block-text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.resume-skills-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.resume-skill-col strong {
+  color: #fff;
+  margin-right: 8px;
+}
+
+.resume-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 14px 18px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.resume-item-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.item-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.item-meta {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.item-desc {
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.resume-footer-bar {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}

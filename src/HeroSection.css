@@ -1,19 +1,28 @@
 /* ─────────────────────────────────────────────
-   HeroSection — Full-screen layout
+   HeroSection — Full-screen layout & Transitions
    Canvas is the background. All UI floats above.
 ───────────────────────────────────────────── */
 
-/* ── Root container ─────────────────────────── */
+/* ── Page wrapper ───────────────────────────── */
+.portfolio-page {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* ── Hero container (full viewport) ──────────── */
 .hero {
   position: relative;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
+  min-height: 600px;
   overflow: hidden;
+  z-index: 5;
 }
 
 /* ── Full-screen character canvas ───────────────
-   position: fixed so it truly covers the viewport
-   independent of any scroll or layout shift.
+   position: fixed so it stays seamless and motionless
+   independent of any scroll.
    z-index: 0 — everything else floats above.
 ──────────────────────────────────────────────── */
 .character-canvas {
@@ -23,14 +32,13 @@
   height: 100vh;
   display: block;
   z-index: 0;
-  will-change: contents;      /* keep canvas on GPU compositing layer */
-  transform: translateZ(0);   /* force own compositing layer */
-  image-rendering: auto;      /* let GPU choose best quality */
+  will-change: contents;
+  transform: translateZ(0);
+  image-rendering: auto;
 }
 
 /* ── Frosted-glass vignette overlay ─────────────
-   Very subtle darkening at corners/edges so the
-   text remains readable without obscuring the face.
+   Subtle darkening at edges so text is crisp.
 ──────────────────────────────────────────────── */
 .hero-vignette {
   position: fixed;
@@ -50,27 +58,42 @@
       transparent 40%);
 }
 
+/* ── Content wrapper below hero ─────────────────
+   Smoothly transitions from character background
+   into rich dark frosted glass theme.
+──────────────────────────────────────────────── */
+.content-wrapper {
+  position: relative;
+  z-index: 10;
+  background: linear-gradient(to bottom,
+    transparent 0%,
+    rgba(10, 10, 10, 0.75) 120px,
+    rgba(10, 10, 10, 0.95) 300px,
+    #0a0a0a 500px
+  );
+}
+
 /* ── Frosted-glass nav pill ──────────────────────
    Centered, floating, backdrop-blur.
 ──────────────────────────────────────────────── */
 .nav-pill {
   position: fixed;
-  top: 28px;
+  top: 24px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 100;
+  z-index: 1000;
   display: flex;
   align-items: center;
   gap: 4px;
   padding: 6px 8px;
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(20, 20, 20, 0.45);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 999px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.25),
-              inset 0 1px 0 rgba(255,255,255,0.12);
-  isolation: isolate; /* prevents accidental layer merge with canvas */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35),
+              inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  isolation: isolate;
 }
 
 .nav-pill a {
@@ -82,23 +105,23 @@
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.75);
+  color: rgba(255, 255, 255, 0.75);
   text-decoration: none;
   transition: background 0.2s ease, color 0.2s ease;
   white-space: nowrap;
 }
 
 .nav-pill a:hover {
-  background: rgba(255,255,255,0.14);
+  background: rgba(255, 255, 255, 0.14);
   color: #fff;
 }
 
 /* ── Bottom-left hero text block ─────────────────
-   Lives at the bottom-left of the viewport.
-   max-width ~360px so it never crowds the face.
+   position: absolute inside .hero so it scrolls away naturally
+   when exploring work, without crowding lower sections.
 ──────────────────────────────────────────────── */
 .hero-text {
-  position: fixed;
+  position: absolute;
   bottom: 9vh;
   left: 6vw;
   z-index: 10;
@@ -114,7 +137,7 @@
   font-weight: 400;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.65);
+  color: rgba(255, 255, 255, 0.65);
   margin-bottom: 4px;
   opacity: 0;
   animation: fadeUp 0.7s ease 0.15s forwards;
@@ -127,10 +150,9 @@
   font-weight: 700;
   line-height: 0.95;
   color: #fff;
-  /* Soft drop shadow so it reads on any background */
   text-shadow:
-    0 2px 12px rgba(0,0,0,0.45),
-    0 0  40px rgba(255,255,255,0.08);
+    0 2px 12px rgba(0, 0, 0, 0.45),
+    0 0 40px rgba(255, 255, 255, 0.08);
   margin-bottom: 18px;
   opacity: 0;
   animation: fadeUp 0.8s ease 0.30s forwards;
@@ -141,7 +163,7 @@
   font-size: clamp(13px, 1.3vw, 15px);
   font-weight: 400;
   line-height: 1.65;
-  color: rgba(255,255,255,0.65);
+  color: rgba(255, 255, 255, 0.65);
   max-width: 340px;
   margin-bottom: 28px;
   opacity: 0;
@@ -173,13 +195,13 @@
   letter-spacing: 0.06em;
   white-space: nowrap;
   transition: transform 0.22s ease, box-shadow 0.22s ease, opacity 0.22s ease;
-  box-shadow: 0 4px 20px rgba(255,255,255,0.20);
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.20);
 }
 
 .btn-resume:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(255,255,255,0.30);
-  background: rgba(255,255,255,0.92);
+  box-shadow: 0 8px 32px rgba(255, 255, 255, 0.30);
+  background: rgba(255, 255, 255, 0.92);
 }
 
 .btn-resume .arrow {
@@ -188,7 +210,7 @@
   justify-content: center;
   width: 18px;
   height: 18px;
-  background: rgba(0,0,0,0.12);
+  background: rgba(0, 0, 0, 0.12);
   border-radius: 50%;
   font-size: 10px;
   transition: transform 0.22s ease;
@@ -205,24 +227,56 @@
   gap: 8px;
   padding: 12px 26px;
   border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.35);
-  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  color: rgba(255,255,255,0.90);
+  color: rgba(255, 255, 255, 0.90);
   font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.06em;
   white-space: nowrap;
   transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, opacity 0.22s ease;
-  isolation: isolate; /* backdrop-filter — prevent layer merge with canvas */
+  isolation: isolate;
 }
 
 .btn-talk:hover {
   transform: translateY(-2px);
-  background: rgba(255,255,255,0.15);
-  border-color: rgba(255,255,255,0.55);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+/* Scroll indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: 24px;
+  right: 6vw;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.scroll-indicator:hover {
+  color: #fff;
+  transform: translateY(2px);
+}
+
+.scroll-indicator-arrow {
+  font-size: 14px;
+  animation: bounceDown 1.8s infinite ease-in-out;
+}
+
+@keyframes bounceDown {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
 }
 
 /* ── Entrance animations ──────────────────────── */
@@ -242,8 +296,11 @@
     font-size: clamp(52px, 15vw, 80px);
   }
   .nav-pill a {
-    padding: 8px 14px;
+    padding: 8px 12px;
     font-size: 11px;
     letter-spacing: 0.08em;
+  }
+  .scroll-indicator {
+    display: none;
   }
 }

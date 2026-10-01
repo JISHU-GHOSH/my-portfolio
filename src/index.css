@@ -21,10 +21,15 @@
   scroll-behavior: smooth;
 }
 
-html, body {
+html {
+  scroll-behavior: smooth;
+}
+
+body {
   width: 100%;
-  height: 100%;
-  overflow: hidden;       /* full-screen, no scroll bars */
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
   background: #0a0a0a;
   font-family: var(--font-sans);
   color: var(--white);
@@ -33,7 +38,23 @@ html, body {
 
 #root {
   width: 100%;
-  height: 100%;
+  min-height: 100%;
+  position: relative;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(10, 10, 10, 0.95);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.32);
 }
 
 /* ─────────────────────────────────────────────
@@ -49,10 +70,9 @@ html, body {
   background: var(--white);
   border-radius: 50%;
   pointer-events: none;
-  z-index: 9999;
+  z-index: 99999;
   transform: translate(-9999px, -9999px);
   will-change: transform;
-  /* Only size/glow transitions — NOT position, NOT background */
   transition:
     width  0.20s cubic-bezier(0.34,1.56,0.64,1),
     height 0.20s cubic-bezier(0.34,1.56,0.64,1),
@@ -80,18 +100,19 @@ html, body {
   border: 1px solid rgba(255,255,255,0.28);
   border-radius: 50%;
   pointer-events: none;
-  z-index: 9998;
+  z-index: 99998;
   transform: translate(-9999px, -9999px);
   will-change: transform;
   transition:
     width  0.30s cubic-bezier(0.34,1.56,0.64,1),
     height 0.30s cubic-bezier(0.34,1.56,0.64,1),
     margin 0.30s cubic-bezier(0.34,1.56,0.64,1),
-    opacity 0.20s ease;
+    opacity 0.20s ease,
+    border-color 0.20s ease;
 }
 
 .cursor-ring.is-hovering {
-  width: 60px; height: 60px;
-  margin-left: -30px; margin-top: -30px;
-  border-color: rgba(255,255,255,0.45);
+  width: 62px; height: 62px;
+  margin-left: -31px; margin-top: -31px;
+  border-color: rgba(255,255,255,0.5);
 }
