@@ -29,19 +29,6 @@ const PROJECTS = [
     stats: 'Sub-100ms • Algorithmic'
   },
   {
-    id: 'mios',
-    title: 'MIOS (Marketing Intelligence OS)',
-    tagline: 'Institutional Knowledge & Experimentation OS',
-    description:
-      'Centralized operating system capturing performance metrics, systematic A/B experiment learnings, and consumer psychology frameworks into a permanent, searchable institutional knowledge repository.',
-    category: 'Full Stack',
-    tags: ['Next.js', 'React', 'TypeScript', 'Supabase', 'Tailwind CSS', 'PostgreSQL'],
-    github: 'https://github.com/joshihridesh001-png/MIOS',
-    demo: 'https://github.com/joshihridesh001-png/MIOS',
-    featured: false,
-    stats: 'Next.js App Router • Supabase'
-  },
-  {
     id: 'portfolio-hero',
     title: 'Interactive 3D Character Hero',
     tagline: 'Zero-Ghosting 60 FPS Cursor Tracking Engine',
@@ -56,7 +43,7 @@ const PROJECTS = [
   }
 ];
 
-const CATEGORIES = ['All', 'AI & Healthcare', 'Quantitative Systems', 'Full Stack', 'Creative Tech'];
+const CATEGORIES = ['All', 'AI & Healthcare', 'Quantitative Systems', 'Creative Tech'];
 
 export default function ProjectsSection() {
   const [activeCategory, setActiveCategory] = useState('All');

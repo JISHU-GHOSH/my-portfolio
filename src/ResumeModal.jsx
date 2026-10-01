@@ -142,16 +142,6 @@ export default function ResumeModal({ isOpen, onClose }) {
 
             <div className="resume-item">
               <div className="resume-item-top">
-                <span className="item-name">MIOS (Marketing Intelligence OS)</span>
-                <span className="item-meta">Next.js • Supabase • TypeScript • Tailwind</span>
-              </div>
-              <p className="item-desc">
-                Centralized platform capturing performance analytics, A/B testing learnings, and psychological models into searchable institutional knowledge.
-              </p>
-            </div>
-
-            <div className="resume-item">
-              <div className="resume-item-top">
                 <span className="item-name">Interactive 3D Cursor Character Portfolio</span>
                 <span className="item-meta">React 19 • HTML5 Canvas • OpenCV Telea Inpainting • Vite</span>
               </div>
