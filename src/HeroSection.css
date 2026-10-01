@@ -59,18 +59,23 @@
 }
 
 /* ── Content wrapper below hero ─────────────────
-   Smoothly transitions from character background
-   into rich dark frosted glass theme.
+   Atmospheric transition maintaining the signature
+   crimson ambience and warm frosted glass depth.
 ──────────────────────────────────────────────── */
 .content-wrapper {
   position: relative;
   z-index: 10;
-  background: linear-gradient(to bottom,
-    transparent 0%,
-    rgba(10, 10, 10, 0.75) 120px,
-    rgba(10, 10, 10, 0.95) 300px,
-    #0a0a0a 500px
-  );
+  background:
+    radial-gradient(ellipse 100% 60% at 85% 25%, rgba(158, 21, 13, 0.35) 0%, transparent 65%),
+    radial-gradient(ellipse 90% 50% at 15% 65%, rgba(135, 16, 11, 0.28) 0%, transparent 60%),
+    linear-gradient(to bottom,
+      transparent 0%,
+      rgba(26, 6, 8, 0.55) 120px,
+      rgba(20, 5, 7, 0.85) 400px,
+      rgba(16, 4, 6, 0.92) 100%
+    );
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 /* ── Frosted-glass nav pill ──────────────────────

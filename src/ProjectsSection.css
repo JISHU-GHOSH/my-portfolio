@@ -102,15 +102,15 @@
 /* Project Card */
 .project-card {
   position: relative;
-  background: rgba(18, 18, 18, 0.78);
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(30, 8, 10, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
   border-radius: 18px;
   padding: 24px 22px;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.10);
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease;
   min-width: 0; /* Prevents flex/grid children from overflowing */
   box-sizing: border-box;
@@ -118,8 +118,8 @@
 
 .project-card:hover {
   transform: translateY(-5px);
-  border-color: rgba(255, 255, 255, 0.28);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.32);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.6), 0 0 28px rgba(158, 21, 13, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.22);
 }
 
 .card-top {
