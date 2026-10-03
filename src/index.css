@@ -136,32 +136,35 @@ body {
 
 /* ─────────────────────────────────────────────
    Scroll-Driven Reveal Choreography (Apple / Linear Precision)
-   Hardware-accelerated entry animations with customizable stagger delays.
+   Hardware-accelerated entry animations with optical blur-dissolve & spring scale.
 ───────────────────────────────────────────── */
 .reveal-on-scroll {
   opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(44px) scale(0.96);
+  filter: blur(8px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
   transition-delay: var(--reveal-delay, 0ms);
-  will-change: opacity, transform;
+  will-change: opacity, transform, filter;
 }
 
 .reveal-on-scroll.is-revealed {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
+  filter: blur(0px);
 }
 
 /* Ensure interactive hover transforms remain silky smooth once revealed */
 .project-card.reveal-on-scroll.is-revealed:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px) scale(1.01);
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
               border-color 0.25s ease,
               box-shadow 0.25s ease;
 }
 
 .bento-card.reveal-on-scroll.is-revealed:hover {
-  transform: translateY(-4px);
+  transform: translateY(-5px);
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
               border-color 0.25s ease,
               box-shadow 0.25s ease;
@@ -172,6 +175,7 @@ body {
   .reveal-on-scroll {
     opacity: 1 !important;
     transform: none !important;
+    filter: none !important;
     transition: none !important;
     will-change: auto !important;
   }

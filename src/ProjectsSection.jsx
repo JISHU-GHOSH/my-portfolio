@@ -86,7 +86,7 @@ export default function ProjectsSection() {
             <article
               key={project.id}
               className="project-card interactive-card reveal-on-scroll"
-              style={{ '--reveal-delay': `${index * 110}ms` }}
+              style={{ '--reveal-delay': `${index * 160}ms` }}
             >
               <div className="card-top">
                 <span className="card-category">{project.category}</span>

@@ -40,7 +40,7 @@ export default function AboutSection() {
           {/* Card 2: Core Programming Languages */}
           <div
             className="bento-card bento-languages interactive-card reveal-on-scroll"
-            style={{ '--reveal-delay': '120ms' }}
+            style={{ '--reveal-delay': '160ms' }}
           >
             <div className="bento-tag">Languages & Foundations</div>
             <h3 className="bento-card-title">Polyglot Fluency</h3>
@@ -62,7 +62,7 @@ export default function AboutSection() {
           {/* Card 3: Portfolio & Modern Stack */}
           <div
             className="bento-card bento-stack interactive-card reveal-on-scroll"
-            style={{ '--reveal-delay': '240ms' }}
+            style={{ '--reveal-delay': '320ms' }}
           >
             <div className="bento-tag">Modern Ecosystem & Tooling</div>
             <h3 className="bento-card-title">Production & Creative Stack</h3>
