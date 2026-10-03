@@ -29,6 +29,13 @@ const MESSAGES = [
   "Looking for high-velocity engineering with taste? Let's talk!"
 ];
 
+const NAV_ITEMS = [
+  { id: 'hero', label: 'Home' },
+  { id: 'work', label: 'Work' },
+  { id: 'about', label: 'About' },
+  { id: 'contact', label: 'Contact' },
+];
+
 export default function HeroSection() {
   const dotRef  = useRef(null);
   const ringRef = useRef(null);
@@ -37,11 +44,94 @@ export default function HeroSection() {
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [isResumeOpen, setIsResumeOpen] = useState(false);
 
+  // Active section scroll spy state
+  const [activeSection, setActiveSection] = useState('hero');
+  const isManualScrollRef = useRef(false);
+  const manualScrollTimeoutRef = useRef(null);
+
   // Easter Egg & Character Interactive States
   const [speechMessage, setSpeechMessage] = useState('');
   const [isSpeechVisible, setIsSpeechVisible] = useState(false);
   const [isNodding, setIsNodding] = useState(false);
   const messageIndexRef = useRef(0);
+
+  // Programmatic smooth scroll with temporary spy lock to avoid midway jitter
+  const handleNavClick = useCallback((e, id) => {
+    e.preventDefault();
+    setActiveSection(id);
+    const targetElement = document.getElementById(id);
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: 'smooth' });
+      window.history.pushState(null, '', `#${id}`);
+    }
+
+    if (manualScrollTimeoutRef.current) clearTimeout(manualScrollTimeoutRef.current);
+    isManualScrollRef.current = true;
+    manualScrollTimeoutRef.current = setTimeout(() => {
+      isManualScrollRef.current = false;
+    }, 850);
+  }, []);
+
+  // ── Scroll Spy Observer ──────────────────────────────────
+  useEffect(() => {
+    const sectionElements = NAV_ITEMS.map((item) => document.getElementById(item.id)).filter(Boolean);
+
+    let ticking = false;
+    const updateActiveSection = () => {
+      if (isManualScrollRef.current) {
+        ticking = false;
+        return;
+      }
+
+      const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+
+      // Bottom boundary: activate contact even if section is short
+      if (windowHeight + scrollY >= documentHeight - 60) {
+        setActiveSection('contact');
+        ticking = false;
+        return;
+      }
+
+      // Top boundary: activate hero immediately
+      if (scrollY < 120) {
+        setActiveSection('hero');
+        ticking = false;
+        return;
+      }
+
+      // 35% viewport eye-level reference threshold
+      const targetY = windowHeight * 0.35;
+      let current = 'hero';
+      for (let i = 0; i < sectionElements.length; i++) {
+        const el = sectionElements[i];
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= targetY) {
+          current = el.id;
+        }
+      }
+      setActiveSection(current);
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(updateActiveSection);
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    updateActiveSection();
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      if (manualScrollTimeoutRef.current) clearTimeout(manualScrollTimeoutRef.current);
+    };
+  }, []);
 
   // Character reaction trigger (silent visual popup + subtle nod)
   const triggerCharacterReaction = useCallback((customMsg) => {
@@ -175,12 +265,22 @@ export default function HeroSection() {
       {/* Vignette gradient overlay for text readability */}
       <div className="hero-vignette" aria-hidden="true" />
 
-      {/* ── Frosted-glass nav pill ──────────────────────── */}
+      {/* ── Frosted-glass nav pill with active scroll spy ────────────────── */}
       <nav className="nav-pill" aria-label="Site navigation">
-        <a href="#hero">Home</a>
-        <a href="#work">Work</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
+        {NAV_ITEMS.map((item) => {
+          const isActive = activeSection === item.id;
+          return (
+            <a
+              key={item.id}
+              href={`#${item.id}`}
+              className={isActive ? 'is-active' : ''}
+              aria-current={isActive ? 'page' : undefined}
+              onClick={(e) => handleNavClick(e, item.id)}
+            >
+              {item.label}
+            </a>
+          );
+        })}
       </nav>
 
       {/* ── Hero Section (100vh) ────────────────────────── */}

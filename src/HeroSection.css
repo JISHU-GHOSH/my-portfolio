@@ -90,7 +90,7 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  padding: 6px 8px;
+  padding: 5px 6px;
   background: rgba(20, 20, 20, 0.45);
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
@@ -99,28 +99,43 @@
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35),
               inset 0 1px 0 rgba(255, 255, 255, 0.12);
   isolation: isolate;
+  scroll-target-group: auto;
 }
 
-
-
 .nav-pill a {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  padding: 8px 20px;
+  justify-content: center;
+  padding: 8px 18px;
   border-radius: 999px;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(255, 255, 255, 0.65);
   text-decoration: none;
-  transition: background 0.2s ease, color 0.2s ease;
+  border: 1px solid transparent;
+  transition: color 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.24s cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
 }
 
 .nav-pill a:hover {
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.10);
   color: #fff;
+}
+
+.nav-pill a.is-active {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.24);
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.35),
+              inset 0 1px 0 rgba(255, 255, 255, 0.30),
+              0 0 16px rgba(158, 21, 13, 0.28);
+  font-weight: 700;
 }
 
 /* ── Bottom-left hero text block ─────────────────
@@ -302,8 +317,13 @@
   .hero-name {
     font-size: clamp(52px, 15vw, 80px);
   }
+  .nav-pill {
+    top: 16px;
+    padding: 4px;
+    gap: 2px;
+  }
   .nav-pill a {
-    padding: 8px 12px;
+    padding: 7px 11px;
     font-size: 11px;
     letter-spacing: 0.08em;
   }
