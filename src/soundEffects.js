@@ -5,22 +5,8 @@
  * Generates warm, luxury, tactile audio feedback.
  */
 
-let audioCtx = null;
-let isMuted = false;
-
-function getAudioContext() {
-  if (typeof window === 'undefined') return null;
-  if (!audioCtx) {
-    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-    if (AudioContextClass) {
-      audioCtx = new AudioContextClass();
-    }
-  }
-  if (audioCtx && audioCtx.state === 'suspended') {
-    audioCtx.resume();
-  }
-  return audioCtx;
-}
+// Audio is disabled per user preference for silent luxury browsing.
+let isMuted = true;
 
 /**
  * Play a gentle, luxury interface chime/pop when the character speaks.

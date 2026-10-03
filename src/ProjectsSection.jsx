@@ -37,7 +37,7 @@ const PROJECTS = [
     category: 'Creative Tech',
     tags: ['React 19', 'HTML5 Canvas', 'Python / OpenCV', 'Spring Physics', 'Vite'],
     github: 'https://github.com/JISHU-GHOSH/my-portfolio',
-    demo: 'http://localhost:5173',
+    demo: '#hero',
     featured: true,
     stats: '60 FPS • <35ms Response'
   }

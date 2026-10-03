@@ -28,7 +28,10 @@ const ASPECT_RATIO    = 1920 / 1080;
 export default function CharacterCanvas({ isNodding = false }) {
   const canvasRef = useRef(null);
   const propsRef = useRef({ isNodding });
-  propsRef.current = { isNodding };
+
+  useEffect(() => {
+    propsRef.current = { isNodding };
+  }, [isNodding]);
 
   const state = useRef({
     frames:         [],
