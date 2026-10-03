@@ -168,7 +168,7 @@ export default function ResumeModal({ isOpen, onClose }) {
 
         <div className="resume-footer-bar">
           <a
-            href="/resume.pdf"
+            href={`${import.meta.env.BASE_URL || '/'}resume.pdf`}
             target="_blank"
             rel="noopener noreferrer"
             className="card-btn card-btn-secondary"

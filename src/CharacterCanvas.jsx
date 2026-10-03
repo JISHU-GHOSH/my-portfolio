@@ -60,12 +60,14 @@ export default function CharacterCanvas({ isNodding = false }) {
       }
     };
 
+    const baseUrl = import.meta.env.BASE_URL || '/';
+
     // Preload 64 directional frames
     for (let i = 0; i < NUM_FRAMES; i++) {
       const img = new Image();
       img.onload = onImageLoaded;
       img.onerror = onImageLoaded;
-      img.src = `/frames/${String(i).padStart(3, '0')}.webp`;
+      img.src = `${baseUrl}frames/${String(i).padStart(3, '0')}.webp`;
       framesArray.push(img);
     }
     s.frames = framesArray;
@@ -74,7 +76,7 @@ export default function CharacterCanvas({ isNodding = false }) {
     const center = new Image();
     center.onload = onImageLoaded;
     center.onerror = onImageLoaded;
-    center.src = '/frames/center.webp';
+    center.src = `${baseUrl}frames/center.webp`;
     s.centerImg = center;
 
     return () => {
