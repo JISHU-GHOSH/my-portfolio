@@ -1,8 +1,12 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import useScrollReveal from './useScrollReveal';
 import './ContactSection.css';
 
 export default function ContactSection({ onOpenModal }) {
+  const sectionRef = useRef(null);
   const [copied, setCopied] = useState(false);
+
+  useScrollReveal(sectionRef);
 
   const copyEmail = () => {
     navigator.clipboard.writeText('jishughosh698@gmail.com');
@@ -11,9 +15,9 @@ export default function ContactSection({ onOpenModal }) {
   };
 
   return (
-    <footer id="contact" className="portfolio-section contact-section">
+    <footer id="contact" ref={sectionRef} className="portfolio-section contact-section">
       <div className="section-container">
-        <div className="contact-card interactive-card">
+        <div className="contact-card interactive-card reveal-on-scroll">
           <div className="contact-glow-badge">Let's Connect</div>
           <h2 className="contact-title">Let's Build Something Exceptional</h2>
           <p className="contact-subtitle">

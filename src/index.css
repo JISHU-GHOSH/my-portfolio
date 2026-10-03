@@ -133,3 +133,47 @@ body {
     display: none !important;
   }
 }
+
+/* ─────────────────────────────────────────────
+   Scroll-Driven Reveal Choreography (Apple / Linear Precision)
+   Hardware-accelerated entry animations with customizable stagger delays.
+───────────────────────────────────────────── */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.reveal-on-scroll.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Ensure interactive hover transforms remain silky smooth once revealed */
+.project-card.reveal-on-scroll.is-revealed:hover {
+  transform: translateY(-5px);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s ease,
+              box-shadow 0.25s ease;
+}
+
+.bento-card.reveal-on-scroll.is-revealed:hover {
+  transform: translateY(-4px);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s ease,
+              box-shadow 0.25s ease;
+}
+
+/* Accessibility: respect user preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    will-change: auto !important;
+  }
+}
+

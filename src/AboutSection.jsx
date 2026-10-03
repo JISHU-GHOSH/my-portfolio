@@ -1,10 +1,15 @@
+import { useRef } from 'react';
+import useScrollReveal from './useScrollReveal';
 import './AboutSection.css';
 
 export default function AboutSection() {
+  const sectionRef = useRef(null);
+  useScrollReveal(sectionRef);
+
   return (
-    <section id="about" className="portfolio-section about-section">
+    <section id="about" ref={sectionRef} className="portfolio-section about-section">
       <div className="section-container">
-        <div className="section-header">
+        <div className="section-header reveal-on-scroll">
           <div className="section-badge">About & Philosophy</div>
           <h2 className="section-title">Code as an Intuitive Medium</h2>
           <p className="section-subtitle">
@@ -14,7 +19,10 @@ export default function AboutSection() {
 
         <div className="bento-grid">
           {/* Card 1: Vibe Coder Philosophy (Without Buzzwords) */}
-          <div className="bento-card bento-hero interactive-card">
+          <div
+            className="bento-card bento-hero interactive-card reveal-on-scroll"
+            style={{ '--reveal-delay': '0ms' }}
+          >
             <div className="bento-tag">The Approach</div>
             <h3 className="bento-title">Speed, Taste & Fluid Execution</h3>
             <p className="bento-text">
@@ -30,7 +38,10 @@ export default function AboutSection() {
           </div>
 
           {/* Card 2: Core Programming Languages */}
-          <div className="bento-card bento-languages interactive-card">
+          <div
+            className="bento-card bento-languages interactive-card reveal-on-scroll"
+            style={{ '--reveal-delay': '120ms' }}
+          >
             <div className="bento-tag">Languages & Foundations</div>
             <h3 className="bento-card-title">Polyglot Fluency</h3>
             <p className="bento-card-desc">
@@ -49,7 +60,10 @@ export default function AboutSection() {
           </div>
 
           {/* Card 3: Portfolio & Modern Stack */}
-          <div className="bento-card bento-stack interactive-card">
+          <div
+            className="bento-card bento-stack interactive-card reveal-on-scroll"
+            style={{ '--reveal-delay': '240ms' }}
+          >
             <div className="bento-tag">Modern Ecosystem & Tooling</div>
             <h3 className="bento-card-title">Production & Creative Stack</h3>
             <p className="bento-card-desc">

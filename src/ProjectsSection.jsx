@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import useScrollReveal from './useScrollReveal';
 import './ProjectsSection.css';
 
 const PROJECTS = [
@@ -46,16 +47,19 @@ const PROJECTS = [
 const CATEGORIES = ['All', 'AI & Healthcare', 'Quantitative Systems', 'Creative Tech'];
 
 export default function ProjectsSection() {
+  const sectionRef = useRef(null);
   const [activeCategory, setActiveCategory] = useState('All');
 
   const filteredProjects = activeCategory === 'All'
     ? PROJECTS
     : PROJECTS.filter(p => p.category === activeCategory);
 
+  useScrollReveal(sectionRef, [activeCategory]);
+
   return (
-    <section id="work" className="portfolio-section projects-section">
+    <section id="work" ref={sectionRef} className="portfolio-section projects-section">
       <div className="section-container">
-        <div className="section-header">
+        <div className="section-header reveal-on-scroll">
           <div className="section-badge">Selected Work</div>
           <h2 className="section-title">Projects & Systems</h2>
           <p className="section-subtitle">
@@ -78,8 +82,12 @@ export default function ProjectsSection() {
         </div>
 
         <div className="projects-grid">
-          {filteredProjects.map((project) => (
-            <article key={project.id} className="project-card interactive-card">
+          {filteredProjects.map((project, index) => (
+            <article
+              key={project.id}
+              className="project-card interactive-card reveal-on-scroll"
+              style={{ '--reveal-delay': `${index * 110}ms` }}
+            >
               <div className="card-top">
                 <span className="card-category">{project.category}</span>
                 <span className="card-stats">{project.stats}</span>
