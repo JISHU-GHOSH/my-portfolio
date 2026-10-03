@@ -119,3 +119,17 @@ body {
   margin-left: -31px; margin-top: -31px;
   border-color: rgba(255,255,255,0.5);
 }
+
+/* ─────────────────────────────────────────────
+   Touch & Mobile devices
+   Restore default touch cursor, hide magnetic dot/ring
+───────────────────────────────────────────── */
+@media (hover: none) and (pointer: coarse) {
+  *, *::before, *::after {
+    cursor: auto !important;
+  }
+  .cursor-dot,
+  .cursor-ring {
+    display: none !important;
+  }
+}
