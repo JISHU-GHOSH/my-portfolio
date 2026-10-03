@@ -30,7 +30,7 @@ export default function AboutSection() {
           </div>
 
           {/* Card 2: Core Programming Languages */}
-          <div className="bento-card bento-frontend interactive-card">
+          <div className="bento-card bento-languages interactive-card">
             <div className="bento-tag">Languages & Foundations</div>
             <h3 className="bento-card-title">Polyglot Fluency</h3>
             <p className="bento-card-desc">
@@ -49,7 +49,7 @@ export default function AboutSection() {
           </div>
 
           {/* Card 3: Portfolio & Modern Stack */}
-          <div className="bento-card bento-backend interactive-card">
+          <div className="bento-card bento-stack interactive-card">
             <div className="bento-tag">Modern Ecosystem & Tooling</div>
             <h3 className="bento-card-title">Production & Creative Stack</h3>
             <p className="bento-card-desc">
@@ -68,25 +68,6 @@ export default function AboutSection() {
               <li className="skill-pill">PostgreSQL</li>
               <li className="skill-pill">Git & GitHub Actions</li>
             </ul>
-          </div>
-
-          {/* Card 4: Execution Metrics */}
-          <div className="bento-card bento-metrics interactive-card">
-            <div className="bento-tag">Execution Standards</div>
-            <div className="metrics-row">
-              <div className="metric-box">
-                <span className="metric-number">Flow State</span>
-                <span className="metric-label">High-Velocity Prototyping</span>
-              </div>
-              <div className="metric-box">
-                <span className="metric-number">60 FPS</span>
-                <span className="metric-label">Zero-Jank Visuals</span>
-              </div>
-              <div className="metric-box">
-                <span className="metric-number">&lt;35ms</span>
-                <span className="metric-label">Real-time Interaction</span>
-              </div>
-            </div>
           </div>
         </div>
       </div>
