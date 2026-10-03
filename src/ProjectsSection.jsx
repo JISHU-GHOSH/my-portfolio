@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import useScrollReveal from './useScrollReveal';
+import ProjectMockup from './ProjectMockup';
 import './ProjectsSection.css';
 
 const PROJECTS = [
@@ -88,6 +89,8 @@ export default function ProjectsSection() {
               className="project-card interactive-card reveal-on-scroll"
               style={{ '--reveal-delay': `${index * 160}ms` }}
             >
+              <ProjectMockup projectId={project.id} />
+
               <div className="card-top">
                 <span className="card-category">{project.category}</span>
                 <span className="card-stats">{project.stats}</span>
