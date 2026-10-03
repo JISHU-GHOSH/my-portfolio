@@ -89,14 +89,11 @@ export default function CharacterCanvas({ isNodding = false }) {
     };
   }, []);
 
-  // ── Unified Mouse, Touch & Gyroscope Motion Engine ──────
+  // ── Unified Mouse & Touch Motion Engine ───────────────────
   useEffect(() => {
     const s = state.current;
     let isTouching = false;
     let touchReturnRaf = null;
-    let lastBeta = null;
-    let lastGamma = null;
-    let permissionRequested = false;
 
     // Desktop mousemove
     const onMove = e => {
@@ -106,25 +103,9 @@ export default function CharacterCanvas({ isNodding = false }) {
       }
     };
 
-    // Mobile touch interaction: instant pivot on touch, smooth return on release
+    // Mobile touch interaction: instant pivot on touch, smooth return to eye-contact on release
     const onTouchStart = e => {
       if (window.scrollY > window.innerHeight * 0.8) return;
-
-      // Request iOS motion permission on first explicit user gesture if required
-      if (
-        !permissionRequested &&
-        typeof DeviceOrientationEvent !== 'undefined' &&
-        typeof DeviceOrientationEvent.requestPermission === 'function'
-      ) {
-        permissionRequested = true;
-        DeviceOrientationEvent.requestPermission()
-          .then(res => {
-            if (res === 'granted') {
-              window.addEventListener('deviceorientation', onOrientation, { passive: true });
-            }
-          })
-          .catch(() => {});
-      }
 
       if (e.touches && e.touches[0] && window.innerWidth > 0 && window.innerHeight > 0) {
         isTouching = true;
@@ -165,70 +146,11 @@ export default function CharacterCanvas({ isNodding = false }) {
       touchReturnRaf = requestAnimationFrame(driftToCenter);
     };
 
-    // Device orientation (gyroscope) tracking
-    const onOrientation = e => {
-      if (isTouching) return; // Touch interaction takes precedence over tilt
-      if (window.scrollY > window.innerHeight * 0.7) return; // Dormant when scrolled down
-      if (e.beta === null || e.gamma === null) return;
-
-      const rawBeta = e.beta;   // Pitch [-180, 180]
-      const rawGamma = e.gamma; // Roll [-90, 90]
-
-      // Filter micro hand tremors (deadband 1.0 deg)
-      if (
-        lastBeta !== null && Math.abs(rawBeta - lastBeta) < 1.0 &&
-        lastGamma !== null && Math.abs(rawGamma - lastGamma) < 1.0
-      ) {
-        return;
-      }
-      lastBeta = rawBeta;
-      lastGamma = rawGamma;
-
-      // Screen rotation transformation: adapt axes in portrait vs. landscape
-      const screenAngle = (screen.orientation && screen.orientation.angle !== undefined)
-        ? screen.orientation.angle
-        : (typeof window.orientation === 'number' ? window.orientation : 0);
-
-      let pitch = rawBeta;
-      let roll = rawGamma;
-
-      if (screenAngle === 90) {
-        pitch = -rawGamma;
-        roll = rawBeta;
-      } else if (screenAngle === -90 || screenAngle === 270) {
-        pitch = rawGamma;
-        roll = -rawBeta;
-      } else if (screenAngle === 180) {
-        pitch = -rawBeta;
-        roll = -rawGamma;
-      }
-
-      // Natural resting pitch for phone in hand: ~45 degrees
-      // Subtle parallax deflection: +/- 20% of viewport around eye-contact face center
-      const deltaPitch = Math.max(-25, Math.min(25, pitch - 45));
-      const deltaRoll  = Math.max(-25, Math.min(25, roll));
-
-      const targetX = FACE_CENTER_X + (deltaRoll / 25) * 0.20;
-      const targetY = FACE_CENTER_Y + (deltaPitch / 25) * 0.20;
-
-      // Smooth lerp into position
-      s.mouseX += (targetX - s.mouseX) * 0.14;
-      s.mouseY += (targetY - s.mouseY) * 0.14;
-    };
-
     window.addEventListener('mousemove', onMove, { passive: true });
     window.addEventListener('touchstart', onTouchStart, { passive: true });
     window.addEventListener('touchmove', onTouchMove, { passive: true });
     window.addEventListener('touchend', onTouchEnd, { passive: true });
     window.addEventListener('touchcancel', onTouchEnd, { passive: true });
-
-    // Attach orientation listener (works automatically on Android/non-gated browsers)
-    if (
-      typeof DeviceOrientationEvent !== 'undefined' &&
-      typeof DeviceOrientationEvent.requestPermission !== 'function'
-    ) {
-      window.addEventListener('deviceorientation', onOrientation, { passive: true });
-    }
 
     return () => {
       window.removeEventListener('mousemove', onMove);
@@ -236,7 +158,6 @@ export default function CharacterCanvas({ isNodding = false }) {
       window.removeEventListener('touchmove', onTouchMove);
       window.removeEventListener('touchend', onTouchEnd);
       window.removeEventListener('touchcancel', onTouchEnd);
-      window.removeEventListener('deviceorientation', onOrientation);
       if (touchReturnRaf) cancelAnimationFrame(touchReturnRaf);
     };
   }, []);
