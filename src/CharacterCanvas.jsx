@@ -13,8 +13,10 @@
 import { useRef, useEffect } from 'react';
 
 const NUM_FRAMES      = 64;
-const DEADZONE_RADIUS = 0.12;
+const DEADZONE_RADIUS = 0.16;
 const BG_COLOR        = '#9e150d';
+const FACE_CENTER_X   = 0.50;
+const FACE_CENTER_Y   = 0.40;
 
 // How fast the frame index lerps toward the target
 const FRAME_LERP      = 0.15;
@@ -42,8 +44,8 @@ export default function CharacterCanvas({ isNodding = false }) {
     targetAngle:    0,     // raw angle from cursor (radians)
     isCenter:       true,
     rafId:          null,
-    mouseX:         0.5,
-    mouseY:         0.5,
+    mouseX:         FACE_CENTER_X,
+    mouseY:         FACE_CENTER_Y,
     isReady:        false,
     nodProgress:    0,
   });
@@ -145,18 +147,18 @@ export default function CharacterCanvas({ isNodding = false }) {
       isTouching = false;
       if (window.scrollY > window.innerHeight * 0.8) return;
 
-      // Smoothly drift gaze back towards center eye-contact (0.5, 0.5) over ~350ms
+      // Smoothly drift gaze back towards center eye-contact over ~350ms
       function driftToCenter() {
         if (isTouching) return;
-        const dx = 0.5 - s.mouseX;
-        const dy = 0.5 - s.mouseY;
+        const dx = FACE_CENTER_X - s.mouseX;
+        const dy = FACE_CENTER_Y - s.mouseY;
         if (Math.abs(dx) > 0.005 || Math.abs(dy) > 0.005) {
           s.mouseX += dx * 0.12;
           s.mouseY += dy * 0.12;
           touchReturnRaf = requestAnimationFrame(driftToCenter);
         } else {
-          s.mouseX = 0.5;
-          s.mouseY = 0.5;
+          s.mouseX = FACE_CENTER_X;
+          s.mouseY = FACE_CENTER_Y;
         }
       }
       if (touchReturnRaf) cancelAnimationFrame(touchReturnRaf);
@@ -202,12 +204,12 @@ export default function CharacterCanvas({ isNodding = false }) {
       }
 
       // Natural resting pitch for phone in hand: ~45 degrees
-      // Subtle parallax deflection: +/- 24% of viewport around center
+      // Subtle parallax deflection: +/- 20% of viewport around eye-contact face center
       const deltaPitch = Math.max(-25, Math.min(25, pitch - 45));
       const deltaRoll  = Math.max(-25, Math.min(25, roll));
 
-      const targetX = 0.5 + (deltaRoll / 25) * 0.24;
-      const targetY = 0.5 + (deltaPitch / 25) * 0.24;
+      const targetX = FACE_CENTER_X + (deltaRoll / 25) * 0.20;
+      const targetY = FACE_CENTER_Y + (deltaPitch / 25) * 0.20;
 
       // Smooth lerp into position
       s.mouseX += (targetX - s.mouseX) * 0.14;
@@ -276,8 +278,8 @@ export default function CharacterCanvas({ isNodding = false }) {
       if (W <= 0 || H <= 0) return;
 
       // ── Face center in viewport coordinates ──
-      const faceCX = W * 0.50;
-      const faceCY = H * 0.40;
+      const faceCX = W * FACE_CENTER_X;
+      const faceCY = H * FACE_CENTER_Y;
 
       // ── Cursor-to-face vector ─────────────────
       const cx = s.mouseX * W;
