@@ -4,6 +4,46 @@
  */
 
 export default function ProjectMockup({ projectId }) {
+  if (projectId === 'promptforge-ai') {
+    return (
+      <div className="project-mockup mockup-promptforge" aria-hidden="true">
+        <div className="mockup-bar">
+          <div className="mockup-dots">
+            <span className="dot dot-red" />
+            <span className="dot dot-amber" />
+            <span className="dot dot-green" />
+          </div>
+          <span className="mockup-filename">promptforge // sidepanel-studio</span>
+          <span className="mockup-badge badge-purple">FAILOVER OK</span>
+        </div>
+
+        <div className="mockup-body mockup-body-split">
+          <div className="mockup-wand-wrap">
+            <div className="mockup-wand-badge">
+              <span className="wand-icon">🪄</span>
+              <span className="wand-sub">&lt;180ms Groq</span>
+            </div>
+          </div>
+
+          <div className="mockup-telemetry-col">
+            <div className="mockup-telemetry-row">
+              <span className="telemetry-label">Cascade:</span>
+              <span className="telemetry-val val-purple">Groq ➔ Gemini ➔ Claude</span>
+            </div>
+            <div className="mockup-telemetry-row">
+              <span className="telemetry-label">In-Page Wand:</span>
+              <span className="telemetry-val">ChatGPT • Claude • Gemini</span>
+            </div>
+            <div className="mockup-telemetry-row">
+              <span className="telemetry-label">Test Suite:</span>
+              <span className="telemetry-val">138/138 Passed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (projectId === 'xubhodaya') {
     return (
       <div className="project-mockup mockup-xubhodaya" aria-hidden="true">

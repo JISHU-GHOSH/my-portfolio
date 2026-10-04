@@ -122,6 +122,16 @@ export default function ResumeModal({ isOpen, onClose }) {
             <h4 className="block-title">Featured Projects</h4>
             <div className="resume-item">
               <div className="resume-item-top">
+                <span className="item-name">PromptForge AI</span>
+                <span className="item-meta">TypeScript • React 19 • Tailwind CSS • Manifest V3 • Vitest</span>
+              </div>
+              <p className="item-desc">
+                Multi-model LLM prompt engineering Chrome extension featuring failover cascades (Groq, Gemini, GPT-4o, Claude), in-page magic wand DOM injection, and 138+ automated unit tests.
+              </p>
+            </div>
+
+            <div className="resume-item">
+              <div className="resume-item-top">
                 <span className="item-name">Memory Companion (Xubhodaya)</span>
                 <span className="item-meta">Smart India Hackathon 2026 • Python • FastAPI • React</span>
               </div>

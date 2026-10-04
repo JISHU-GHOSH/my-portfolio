@@ -91,10 +91,10 @@
   box-shadow: 0 4px 16px rgba(255, 255, 255, 0.25);
 }
 
-/* Projects Grid — Perfect 3-column fit on desktop, responsive stack on smaller viewports */
+/* Projects Grid — Adaptive multi-column grid, perfect 2x2 on desktop, single-column on mobile */
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr));
   gap: 20px;
   width: 100%;
   box-sizing: border-box;
@@ -295,6 +295,12 @@
   background: rgba(14, 4, 6, 0.85);
 }
 
+.mockup-promptforge {
+  background:
+    radial-gradient(circle at 90% 10%, rgba(199, 125, 255, 0.18) 0%, transparent 60%),
+    rgba(12, 3, 5, 0.65);
+}
+
 .mockup-xubhodaya {
   background:
     radial-gradient(circle at 90% 10%, rgba(16, 185, 129, 0.14) 0%, transparent 60%),
@@ -356,6 +362,12 @@
   text-transform: uppercase;
 }
 
+.badge-purple {
+  color: #c77dff;
+  background: rgba(199, 125, 255, 0.15);
+  border: 1px solid rgba(199, 125, 255, 0.35);
+}
+
 .badge-emerald {
   color: #10b981;
   background: rgba(16, 185, 129, 0.15);
@@ -387,12 +399,45 @@
   gap: 14px;
 }
 
+.mockup-wand-wrap,
 .mockup-gauge-wrap,
 .mockup-radar-wrap {
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.mockup-wand-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  background: rgba(199, 125, 255, 0.08);
+  border: 1px solid rgba(199, 125, 255, 0.22);
+}
+
+.wand-icon {
+  font-size: 22px;
+  filter: drop-shadow(0 0 8px rgba(199, 125, 255, 0.6));
+  animation: wandFloat 2.6s ease-in-out infinite alternate;
+}
+
+@keyframes wandFloat {
+  0% { transform: translateY(0px) rotate(0deg); }
+  100% { transform: translateY(-3px) rotate(8deg); }
+}
+
+.wand-sub {
+  font-family: 'SF Mono', Monaco, Consolas, monospace;
+  font-size: 8px;
+  font-weight: 700;
+  color: #d8b4fe;
+  margin-top: 3px;
+  letter-spacing: 0.02em;
 }
 
 /* Radar rotation */
@@ -435,6 +480,7 @@
   font-weight: 600;
 }
 
+.val-purple  { color: #d8b4fe; }
 .val-emerald { color: #34d399; }
 .val-crimson { color: #f87171; }
 

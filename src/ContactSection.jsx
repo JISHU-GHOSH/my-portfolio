@@ -55,13 +55,23 @@ export default function ContactSection({ onOpenModal }) {
             </a>
             <span className="social-dot">•</span>
             <a
-              href="https://www.linkedin.com"
+              href="https://www.linkedin.com/in/jishu-ghosh-6b9270336/"
               target="_blank"
               rel="noopener noreferrer"
               className="social-link"
               aria-label="LinkedIn profile"
             >
               LinkedIn
+            </a>
+            <span className="social-dot">•</span>
+            <a
+              href="https://x.com/JISHU-GHOSH"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="social-link"
+              aria-label="X / Twitter profile"
+            >
+              X (Twitter)
             </a>
           </div>
 

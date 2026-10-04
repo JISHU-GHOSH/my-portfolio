@@ -5,6 +5,19 @@ import './ProjectsSection.css';
 
 const PROJECTS = [
   {
+    id: 'promptforge-ai',
+    title: 'PromptForge AI',
+    tagline: 'Multi-Model LLM Prompt Engineering & Synthesis Studio',
+    description:
+      'High-velocity Chrome Extension featuring multi-model LLM failover cascades (Groq LLaMA 3.3 70B, Gemini 3.8/2.5 Flash, GPT-4o, Claude 3.5 Sonnet), in-page magic wand DOM injection across ChatGPT/Claude/Gemini/GitHub, Chrome Side Panel Studio, and 138+ automated Vitest suites.',
+    category: 'Developer Tools & AI',
+    tags: ['TypeScript', 'React 19', 'Tailwind CSS', 'Manifest V3', 'Chrome SidePanel', 'Groq LLaMA', 'Gemini API', 'Vitest'],
+    github: 'https://github.com/JISHU-GHOSH/prompt-generator',
+    demo: 'https://github.com/JISHU-GHOSH/prompt-generator',
+    featured: true,
+    stats: 'Manifest V3 • 138+ Tests • Multi-LLM'
+  },
+  {
     id: 'xubhodaya',
     title: 'Memory Companion (Xubhodaya)',
     tagline: 'AI Dementia Cognitive Care & Memory Assistance Platform',
@@ -45,7 +58,7 @@ const PROJECTS = [
   }
 ];
 
-const CATEGORIES = ['All', 'AI & Healthcare', 'Quantitative Systems', 'Creative Tech'];
+const CATEGORIES = ['All', 'Developer Tools & AI', 'AI & Healthcare', 'Quantitative Systems', 'Creative Tech'];
 
 export default function ProjectsSection() {
   const sectionRef = useRef(null);
