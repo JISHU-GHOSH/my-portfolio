@@ -181,3 +181,39 @@ body {
   }
 }
 
+/* ─────────────────────────────────────────────
+   Interactive Card Spotlight (Linear / Vercel Glow)
+   Dynamic radial spotlight tracking cursor coordinates
+───────────────────────────────────────────── */
+.interactive-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.interactive-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background: radial-gradient(
+    420px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
+    rgba(255, 255, 255, 0.08),
+    transparent 65%
+  );
+}
+
+.interactive-card:hover::before {
+  opacity: 1;
+}
+
+/* Ensure all interactive card children stay above the spotlight */
+.interactive-card > * {
+  position: relative;
+  z-index: 2;
+}
+
+

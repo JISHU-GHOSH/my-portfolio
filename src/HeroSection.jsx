@@ -196,6 +196,14 @@ export default function HeroSection() {
         ringX = rawX; ringY = rawY;
         moved = true;
       }
+
+      // Dynamic radial spotlight tracking on .interactive-card
+      const card = e.target.closest?.('.interactive-card');
+      if (card) {
+        const rect = card.getBoundingClientRect();
+        card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+        card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+      }
     }
 
     function tick() {
@@ -235,6 +243,13 @@ export default function HeroSection() {
       ) {
         dot.classList.remove('is-hovering');
         ring.classList.remove('is-hovering');
+      }
+
+      // Reset spotlight coordinates when cursor leaves card
+      const card = target.closest?.('.interactive-card');
+      if (card && (!e.relatedTarget || !card.contains(e.relatedTarget))) {
+        card.style.removeProperty('--mouse-x');
+        card.style.removeProperty('--mouse-y');
       }
     }
 
